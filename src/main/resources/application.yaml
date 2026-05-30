@@ -5,6 +5,8 @@ server:
 spring:
   application:
     name: EcomMed
+  profiles:
+    active: dev
   security:
     user:
       name: root
