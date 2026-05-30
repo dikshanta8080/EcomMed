@@ -23,9 +23,9 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Hospital Management System API")
+                        .title("Medical Ecommerce System API")
                         .version("1.0.0")
-                        .description("API documentation for Hospital Management System"))
+                        .description("API documentation for Ecommerce System"))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(new Components()
                         .addSecuritySchemes("bearerAuth",
