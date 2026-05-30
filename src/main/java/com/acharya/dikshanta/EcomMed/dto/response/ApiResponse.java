@@ -1,9 +1,6 @@
 package com.acharya.dikshanta.EcomMed.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
 
@@ -11,6 +8,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
+@Getter
 public class ApiResponse<T> {
     private boolean success;
     private String message;

@@ -8,6 +8,7 @@ public interface MessageConstants {
 
     interface AuthConstants {
         String REGISTRATION_SUCCESSFUL = "Registration Successful";
+        String LOGIN_SUCCESSFUL = "Login Successful";
     }
 
 }

@@ -5,12 +5,14 @@ import com.acharya.dikshanta.EcomMed.filters.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,16 +23,21 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+import static com.acharya.dikshanta.EcomMed.enums.Permission.CART_ADD;
+
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final CustomUserDetailService customUserDetailService;
     private final JwtFilter jwtFilter;
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         req -> req
                                 .requestMatchers(
@@ -38,13 +45,14 @@ public class SecurityConfig {
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**",
                                         "/swagger-resources/**",
-                                        "/webjars/**",
-                                        "/health"
+                                        "/webjars/**"
                                 ).permitAll()
+                                .requestMatchers(HttpMethod.GET, "/health").hasAuthority(CART_ADD.getPermissionName())
                                 .requestMatchers(ApiEndpoints.PUBLIC_ENDPOINT).permitAll()
                                 .anyRequest().authenticated()
 
                 ).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+
                 .build();
     }
 

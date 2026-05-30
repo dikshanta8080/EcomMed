@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class EmailValidatorConstraint implements ConstraintValidator<EmailValidator, String> {
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
+        if (value == null) return false;
         return value.endsWith("@gmail.com");
     }
 }

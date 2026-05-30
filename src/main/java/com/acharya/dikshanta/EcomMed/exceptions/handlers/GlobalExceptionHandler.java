@@ -8,19 +8,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.Instant;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<Void>> handleAllExceptions(Exception e) {
-        int statusCode = 500;
-        statusCode = e instanceof BusinessException ? 400 : 500;
-        return ResponseEntity.status(statusCode)
-                .body(ApiResponse.error(e.getMessage()));
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException e) {
@@ -37,8 +30,19 @@ public class GlobalExceptionHandler {
                 .success(false)
                 .message("Validation failed")
                 .data(errorMaps)
+                .timestamp(Instant.now())
                 .build();
 
         return ResponseEntity.badRequest().body(apiResponse);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse<Void>> handleAllExceptions(Exception e) {
+        int statusCode = 500;
+        statusCode = e instanceof BusinessException ? 400 : 500;
+        return ResponseEntity.status(statusCode)
+                .body(ApiResponse.error(e.getMessage()));
+    }
+
+
 }
