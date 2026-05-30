@@ -1,65 +1,348 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Welcome to EcomMed</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap"
+          rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f0ede8;
+            font-family: 'DM Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .email-wrapper {
+            max-width: 620px;
+            margin: 48px auto;
+            padding: 0 16px 48px;
+        }
+
+        /* ── Top wordmark bar ── */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0 28px;
+        }
+
+        .topbar-brand {
+            font-family: 'DM Serif Display', serif;
+            font-size: 22px;
+            color: #1a1a18;
+            letter-spacing: -0.3px;
+        }
+
+        .topbar-brand span {
+            color: #2a6b4e;
+        }
+
+        .topbar-tag {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #888;
+        }
+
+        /* ── Hero card ── */
+        .hero-card {
+            background: #1c3d2e;
+            border-radius: 20px;
+            padding: 52px 48px 44px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle decorative circle */
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .hero-card::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            left: -60px;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .hero-eyebrow {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            color: #a8d5bc;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            padding: 6px 14px;
+            border-radius: 100px;
+            margin-bottom: 28px;
+        }
+
+        .hero-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 42px;
+            color: #ffffff;
+            line-height: 1.12;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title em {
+            color: #6fcf97;
+            font-style: italic;
+        }
+
+        .hero-subtitle {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.65;
+            max-width: 400px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── Details card ── */
+        .details-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 36px 40px;
+            margin-top: 12px;
+        }
+
+        .details-header {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid #f2f0ec;
+        }
+
+        .detail-row:last-of-type {
+            border-bottom: none;
+        }
+
+        .detail-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #f3f9f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-right: 16px;
+        }
+
+        .detail-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: #2a6b4e;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #aaa;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1a1a18;
+        }
+
+        /* ── CTA button ── */
+        .cta-wrap {
+            margin-top: 28px;
+            text-align: center;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: #1c3d2e;
+            color: #ffffff;
+            text-decoration: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            padding: 15px 36px;
+            border-radius: 100px;
+        }
+
+        .cta-arrow {
+            display: inline-block;
+            margin-left: 8px;
+            font-size: 16px;
+        }
+
+        /* ── Footer ── */
+        .footer {
+            padding: 28px 0 0;
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 12px;
+            color: #aaa;
+            line-height: 1.7;
+        }
+
+        .footer a {
+            color: #2a6b4e;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-divider {
+            width: 40px;
+            height: 1px;
+            background: #d8d4ce;
+            margin: 16px auto;
+        }
+
+        /* ── Mobile ── */
+        @media (max-width: 480px) {
+            .hero-card {
+                padding: 36px 28px 32px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+
+            .details-card {
+                padding: 28px 24px;
+            }
+
+            .cta-btn {
+                display: block;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
-<body style="margin:0;padding:0;background-color:#f4f6f9;font-family:Arial,sans-serif;">
+<body>
 
-<div style="max-width:600px;margin:40px auto;background:#ffffff;border-radius:10px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.1);">
+<div class="email-wrapper">
 
-    <div style="background:#2563eb;padding:30px;text-align:center;">
-        <h1 style="color:white;margin:0;">Welcome to EcomMed 🎉</h1>
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="topbar-brand">Ecom<span>Med</span></div>
+        <div class="topbar-tag">Welcome Email</div>
     </div>
 
-    <div style="padding:30px;">
-
-        <h2 style="color:#333333;margin-top:0;">
-            Hello, <span th:text="${name}">User</span>!
-        </h2>
-
-        <p style="font-size:16px;color:#555555;line-height:1.6;">
-            Thank you for registering with <strong>EcomMed</strong>.
-            Your account has been successfully created and you're ready to explore our platform.
+    <!-- Hero -->
+    <div class="hero-card">
+        <div class="hero-eyebrow">Account Created</div>
+        <h1 class="hero-title">
+            Hello,<br>
+            <em th:text="${name}">John Doe</em> 👋
+        </h1>
+        <p class="hero-subtitle">
+            Your EcomMed account is live. We're thrilled to have you with us — explore our platform and let us take care
+            of your healthcare &amp; e-commerce needs.
         </p>
+    </div>
 
-        <div style="background:#f8fafc;padding:20px;border-radius:8px;margin:25px 0;">
-            <p style="margin:0 0 10px 0;">
-                <strong>Name:</strong>
-                <span th:text="${name}">John Doe</span>
-            </p>
+    <!-- Account Details -->
+    <div class="details-card">
+        <p class="details-header">Your account details</p>
 
-            <p style="margin:0 0 10px 0;">
-                <strong>Email:</strong>
-                <span th:text="${email}">john@example.com</span>
-            </p>
-
-            <p style="margin:0;">
-                <strong>User ID:</strong>
-                <span th:text="${id}">UUID</span>
-            </p>
+        <div class="detail-row">
+            <div class="detail-icon">
+                <!-- person icon -->
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                </svg>
+            </div>
+            <div>
+                <span class="detail-label">Full name</span>
+                <span class="detail-value" th:text="${name}">John Doe</span>
+            </div>
         </div>
 
-        <p style="font-size:16px;color:#555555;line-height:1.6;">
-            We are excited to have you on board and look forward to serving your healthcare and e-commerce needs.
-        </p>
+        <div class="detail-row">
+            <div class="detail-icon">
+                <!-- mail icon -->
+                <svg viewBox="0 0 24 24">
+                    <rect height="16" rx="2" width="20" x="2" y="4"/>
+                    <path d="M2 8l10 6 10-6"/>
+                </svg>
+            </div>
+            <div>
+                <span class="detail-label">Email address</span>
+                <span class="detail-value" th:text="${email}">john@example.com</span>
+            </div>
+        </div>
 
-        <div style="text-align:center;margin:30px 0;">
-            <a href="http://localhost:3000"
-               style="background:#2563eb;color:white;text-decoration:none;padding:12px 24px;border-radius:6px;font-weight:bold;">
-                Visit EcomMed
+        <div class="detail-row">
+            <div class="detail-icon">
+                <!-- fingerprint / id icon -->
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2a10 10 0 0 1 7 17.2M12 2A10 10 0 0 0 5 19.2"/>
+                    <path d="M12 6a6 6 0 0 1 4.2 10.2M12 6A6 6 0 0 0 7.8 16.2"/>
+                    <circle cx="12" cy="12" r="2"/>
+                </svg>
+            </div>
+            <div>
+                <span class="detail-label">User ID</span>
+                <span class="detail-value" th:text="${id}">a1b2-c3d4-e5f6</span>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-wrap">
+            <a class="cta-btn" href="http://localhost:3000">
+                Visit EcomMed <span class="cta-arrow">→</span>
             </a>
         </div>
-
-        <p style="font-size:14px;color:#777777;">
-            If you did not create this account, please ignore this email.
-        </p>
-
     </div>
 
-    <div style="background:#f8fafc;padding:20px;text-align:center;color:#888888;font-size:13px;">
-        © 2026 EcomMed. All rights reserved.
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-divider"></div>
+        <p>
+            If you didn't create this account, you can safely ignore this email.<br>
+            Questions? <a href="mailto:support@ecommed.com">support@ecommed.com</a>
+        </p>
+        <p style="margin-top: 10px;">© 2026 EcomMed. All rights reserved.</p>
     </div>
 
 </div>
