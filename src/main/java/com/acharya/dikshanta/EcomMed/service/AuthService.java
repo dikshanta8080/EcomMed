@@ -7,6 +7,7 @@ import com.acharya.dikshanta.EcomMed.dto.response.UserResponse;
 import com.acharya.dikshanta.EcomMed.security.UserPrincipal;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,9 +20,11 @@ public class AuthService {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final ApplicationEventPublisher eventPublisher;
 
     public UserResponse registerUser(RegistrationRequest request) {
         return userService.createUser(request);
+
     }
 
     @Transactional

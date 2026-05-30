@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Welcome to EcomMed</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f9;font-family:Arial,sans-serif;">
+
+<div style="max-width:600px;margin:40px auto;background:#ffffff;border-radius:10px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.1);">
+
+    <div style="background:#2563eb;padding:30px;text-align:center;">
+        <h1 style="color:white;margin:0;">Welcome to EcomMed 🎉</h1>
+    </div>
+
+    <div style="padding:30px;">
+
+        <h2 style="color:#333333;margin-top:0;">
+            Hello, <span th:text="${name}">User</span>!
+        </h2>
+
+        <p style="font-size:16px;color:#555555;line-height:1.6;">
+            Thank you for registering with <strong>EcomMed</strong>.
+            Your account has been successfully created and you're ready to explore our platform.
+        </p>
+
+        <div style="background:#f8fafc;padding:20px;border-radius:8px;margin:25px 0;">
+            <p style="margin:0 0 10px 0;">
+                <strong>Name:</strong>
+                <span th:text="${name}">John Doe</span>
+            </p>
+
+            <p style="margin:0 0 10px 0;">
+                <strong>Email:</strong>
+                <span th:text="${email}">john@example.com</span>
+            </p>
+
+            <p style="margin:0;">
+                <strong>User ID:</strong>
+                <span th:text="${id}">UUID</span>
+            </p>
+        </div>
+
+        <p style="font-size:16px;color:#555555;line-height:1.6;">
+            We are excited to have you on board and look forward to serving your healthcare and e-commerce needs.
+        </p>
+
+        <div style="text-align:center;margin:30px 0;">
+            <a href="http://localhost:3000"
+               style="background:#2563eb;color:white;text-decoration:none;padding:12px 24px;border-radius:6px;font-weight:bold;">
+                Visit EcomMed
+            </a>
+        </div>
+
+        <p style="font-size:14px;color:#777777;">
+            If you did not create this account, please ignore this email.
+        </p>
+
+    </div>
+
+    <div style="background:#f8fafc;padding:20px;text-align:center;color:#888888;font-size:13px;">
+        © 2026 EcomMed. All rights reserved.
+    </div>
+
+</div>
+
+</body>
+</html>
