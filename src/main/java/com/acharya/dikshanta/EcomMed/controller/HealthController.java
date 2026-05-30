@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealthController {
     @GetMapping
     public ResponseEntity<String> getHealthStatus(HttpServletRequest request, HttpServletResponse response) {
-        String message = String.format("Tomcat is running in 8080 with SessionId: %s", request.getSession().getId());
+        String message = "Tomcat is running in 8080";
         return ResponseEntity.ok(message);
     }
 }
