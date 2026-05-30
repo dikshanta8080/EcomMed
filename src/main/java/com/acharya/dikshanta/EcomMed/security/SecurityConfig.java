@@ -1,5 +1,6 @@
 package com.acharya.dikshanta.EcomMed.security;
 
+import com.acharya.dikshanta.EcomMed.constrants.ApiEndpoints;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,6 +38,7 @@ public class SecurityConfig {
                                         "/webjars/**",
                                         "/health"
                                 ).permitAll()
+                                .requestMatchers(ApiEndpoints.PUBLIC_ENDPOINT).permitAll()
                                 .anyRequest().authenticated()
                 ).build();
     }
