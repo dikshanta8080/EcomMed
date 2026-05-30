@@ -25,6 +25,8 @@ public class CustomUserDetailService implements UserDetailsService {
         return UserPrincipal.builder()
                 .id(user.getId())
                 .username(user.getEmail())
+                .name(user.getName())
+                .role(user.getRole())
                 .password(user.getPassword())
                 .authorities(user.getRole().getAuthorities())
                 .build();
@@ -36,6 +38,8 @@ public class CustomUserDetailService implements UserDetailsService {
         return UserPrincipal.builder()
                 .id(user.getId())
                 .username(user.getEmail())
+                .name(user.getName())
+                .role(user.getRole())
                 .password(user.getPassword())
                 .authorities(user.getRole().getAuthorities())
                 .build();
