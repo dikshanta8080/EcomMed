@@ -13,7 +13,7 @@ import lombok.*;
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(name = "unique_email", columnNames = {"email"})
 })
-public class User extends Auditable {
+public class User extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String name;
 

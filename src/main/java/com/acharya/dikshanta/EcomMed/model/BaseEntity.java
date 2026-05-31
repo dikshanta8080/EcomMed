@@ -21,7 +21,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class Auditable {
+public abstract class BaseEntity {
     @Id
     @UuidGenerator
     private UUID id;

@@ -23,7 +23,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-import static com.acharya.dikshanta.EcomMed.enums.Permission.CART_ADD;
+import static com.acharya.dikshanta.EcomMed.enums.Permission.USERS_GET;
 
 @Configuration
 @RequiredArgsConstructor
@@ -47,7 +47,7 @@ public class SecurityConfig {
                                         "/swagger-resources/**",
                                         "/webjars/**"
                                 ).permitAll()
-                                .requestMatchers(HttpMethod.GET, "/health").hasAuthority(CART_ADD.getPermissionName())
+                                .requestMatchers(HttpMethod.GET, "/users").hasAuthority(USERS_GET.getPermissionName())
                                 .requestMatchers(ApiEndpoints.PUBLIC_ENDPOINT).permitAll()
                                 .anyRequest().authenticated()
 

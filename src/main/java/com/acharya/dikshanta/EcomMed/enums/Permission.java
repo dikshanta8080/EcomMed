@@ -17,6 +17,8 @@ public enum Permission {
     PRODUCT_DELETE("product:delete"),
     PRODUCT_GET("product:get"),
 
+    USERS_GET("users:get"),
+
     // CATEGORY MANAGEMENT
     CATEGORY_ADD("category:add"),
     CATEGORY_DELETE("category:delete"),

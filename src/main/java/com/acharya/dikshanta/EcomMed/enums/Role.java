@@ -20,12 +20,14 @@ public enum Role {
             Permission.ORDER_PLACE,
             Permission.CART_UPDATE,
             Permission.CART_ADD,
-            Permission.CART_DELETE
+            Permission.CART_DELETE,
+            Permission.USERS_GET
     )),
     VENDOR(Set.of(
             Permission.PRODUCT_ADD,
             Permission.PRODUCT_UPDATE,
-            Permission.PRODUCT_GET
+            Permission.PRODUCT_GET,
+            Permission.CART_DELETE
 
     )),
 
