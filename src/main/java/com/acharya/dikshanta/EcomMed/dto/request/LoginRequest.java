@@ -1,6 +1,6 @@
 package com.acharya.dikshanta.EcomMed.dto.request;
 
-import com.acharya.dikshanta.EcomMed.validators.EmailValidator;
+import com.acharya.dikshanta.EcomMed.utils.validators.EmailValidator;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 

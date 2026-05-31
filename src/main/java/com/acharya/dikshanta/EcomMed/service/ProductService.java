@@ -1,0 +1,55 @@
+package com.acharya.dikshanta.EcomMed.service;
+
+import com.acharya.dikshanta.EcomMed.dto.request.ProductCreateRequest;
+import com.acharya.dikshanta.EcomMed.dto.request.UpdateStockRequest;
+import com.acharya.dikshanta.EcomMed.dto.response.ProductResponse;
+import com.acharya.dikshanta.EcomMed.exceptions.BusinessException;
+import com.acharya.dikshanta.EcomMed.exceptions.ResourceNotFoundException;
+import com.acharya.dikshanta.EcomMed.mappers.ProductMapper;
+import com.acharya.dikshanta.EcomMed.model.Category;
+import com.acharya.dikshanta.EcomMed.model.Product;
+import com.acharya.dikshanta.EcomMed.repository.CategoryRepository;
+import com.acharya.dikshanta.EcomMed.repository.ProductRepository;
+import com.acharya.dikshanta.EcomMed.utils.constrants.MessageConstants;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@RequiredArgsConstructor
+@Service
+public class ProductService {
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
+    private final ProductMapper productMapper;
+
+    @Transactional
+    public ProductResponse createProduct(ProductCreateRequest request) {
+        if (productRepository.existsByName(request.name())) {
+            throw new BusinessException(MessageConstants.ProductConstants.PRODUCT_EXISTS);
+        }
+        checkQuantity(request.quantity());
+        Category category = categoryRepository.findById(request.CategoryId()).orElseThrow(() ->
+                new ResourceNotFoundException(MessageConstants.CategoryConstants.CATEGORY_NOT_FOUND));
+        Product product = productMapper.toEntity(request);
+        product.setCategory(category);
+        Product savedProduct = productRepository.save(product);
+        return productMapper.toResponse(savedProduct);
+
+    }
+
+    @Transactional
+    public ProductResponse updateStock(UpdateStockRequest request) {
+        Product product = productRepository.findById(request.productId()).orElseThrow(() ->
+                new ResourceNotFoundException(MessageConstants.ProductConstants.PRODUCT_NOT_FOUND));
+        checkQuantity(request.quantity());
+        product.setQuantity(product.getQuantity() + request.quantity());
+        Product updatedProduct = productRepository.save(product);
+        return productMapper.toResponse(updatedProduct);
+    }
+
+    private void checkQuantity(Integer quantity) {
+        if ((quantity < 1)) {
+            throw new BusinessException(MessageConstants.ProductConstants.INVALID_QUANTITY);
+        }
+    }
+}

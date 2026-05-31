@@ -1,4 +1,4 @@
-package com.acharya.dikshanta.EcomMed.enums;
+package com.acharya.dikshanta.EcomMed.utils.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +22,7 @@ public enum Permission {
     // CATEGORY MANAGEMENT
     CATEGORY_ADD("category:add"),
     CATEGORY_DELETE("category:delete"),
+    CATEGORY_GET("category:get"),
 
     // CUSTOMER - CART & ORDER
     ORDER_PLACE("order:place"),

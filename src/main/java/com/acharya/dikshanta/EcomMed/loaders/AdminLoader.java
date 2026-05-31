@@ -1,9 +1,9 @@
 package com.acharya.dikshanta.EcomMed.loaders;
 
-import com.acharya.dikshanta.EcomMed.enums.Role;
 import com.acharya.dikshanta.EcomMed.model.User;
 import com.acharya.dikshanta.EcomMed.repository.UserRepository;
 import com.acharya.dikshanta.EcomMed.utils.Utils;
+import com.acharya.dikshanta.EcomMed.utils.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;

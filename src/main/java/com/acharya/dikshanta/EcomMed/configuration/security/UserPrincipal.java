@@ -1,6 +1,6 @@
-package com.acharya.dikshanta.EcomMed.security;
+package com.acharya.dikshanta.EcomMed.configuration.security;
 
-import com.acharya.dikshanta.EcomMed.enums.Role;
+import com.acharya.dikshanta.EcomMed.utils.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

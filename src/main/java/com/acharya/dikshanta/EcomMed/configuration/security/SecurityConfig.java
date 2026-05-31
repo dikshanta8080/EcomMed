@@ -1,7 +1,7 @@
-package com.acharya.dikshanta.EcomMed.security;
+package com.acharya.dikshanta.EcomMed.configuration.security;
 
-import com.acharya.dikshanta.EcomMed.constrants.ApiEndpoints;
-import com.acharya.dikshanta.EcomMed.filters.JwtFilter;
+import com.acharya.dikshanta.EcomMed.configuration.security.filters.JwtFilter;
+import com.acharya.dikshanta.EcomMed.utils.constrants.ApiEndpoints;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-import static com.acharya.dikshanta.EcomMed.enums.Permission.USERS_GET;
+import static com.acharya.dikshanta.EcomMed.utils.enums.Permission.*;
 
 @Configuration
 @RequiredArgsConstructor
@@ -48,6 +48,9 @@ public class SecurityConfig {
                                         "/webjars/**"
                                 ).permitAll()
                                 .requestMatchers(HttpMethod.GET, "/users").hasAuthority(USERS_GET.getPermissionName())
+                                .requestMatchers(HttpMethod.GET, "/categories").hasAuthority(CATEGORY_GET.getPermissionName())
+                                .requestMatchers(HttpMethod.POST, "/category").hasAuthority(CATEGORY_GET.getPermissionName())
+                                .requestMatchers(HttpMethod.POST, "/products").hasAuthority(PRODUCT_ADD.getPermissionName())
                                 .requestMatchers(ApiEndpoints.PUBLIC_ENDPOINT).permitAll()
                                 .anyRequest().authenticated()
 

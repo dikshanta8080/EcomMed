@@ -13,6 +13,7 @@ public record PageableRequest(
         String sortDirection
 ) {
     public PageableRequest {
+        pageSize = pageSize == 0 ? 10 : pageSize;
         if (sortBy == null || sortBy.isBlank()) {
             sortBy = "id";
         }

@@ -1,4 +1,4 @@
-package com.acharya.dikshanta.EcomMed.validators;
+package com.acharya.dikshanta.EcomMed.utils.validators;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
