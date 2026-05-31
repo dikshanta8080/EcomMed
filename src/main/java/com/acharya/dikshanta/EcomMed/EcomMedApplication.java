@@ -12,6 +12,7 @@ public class EcomMedApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(EcomMedApplication.class, args);
+
     }
 
 }

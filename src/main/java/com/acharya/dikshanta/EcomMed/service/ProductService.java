@@ -3,6 +3,7 @@ package com.acharya.dikshanta.EcomMed.service;
 import com.acharya.dikshanta.EcomMed.dto.request.ProductCreateRequest;
 import com.acharya.dikshanta.EcomMed.dto.request.UpdateStockRequest;
 import com.acharya.dikshanta.EcomMed.dto.response.ProductResponse;
+import com.acharya.dikshanta.EcomMed.events.ProductCreatedEvent;
 import com.acharya.dikshanta.EcomMed.exceptions.BusinessException;
 import com.acharya.dikshanta.EcomMed.exceptions.ResourceNotFoundException;
 import com.acharya.dikshanta.EcomMed.mappers.ProductMapper;
@@ -13,6 +14,7 @@ import com.acharya.dikshanta.EcomMed.repository.ProductRepository;
 import com.acharya.dikshanta.EcomMed.utils.constrants.MessageConstants;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -21,6 +23,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public ProductResponse createProduct(ProductCreateRequest request) {
@@ -33,6 +36,8 @@ public class ProductService {
         Product product = productMapper.toEntity(request);
         product.setCategory(category);
         Product savedProduct = productRepository.save(product);
+
+        eventPublisher.publishEvent(new ProductCreatedEvent(savedProduct, request.quantity()));
         return productMapper.toResponse(savedProduct);
 
     }
@@ -42,7 +47,6 @@ public class ProductService {
         Product product = productRepository.findById(request.productId()).orElseThrow(() ->
                 new ResourceNotFoundException(MessageConstants.ProductConstants.PRODUCT_NOT_FOUND));
         checkQuantity(request.quantity());
-        product.setQuantity(product.getQuantity() + request.quantity());
         Product updatedProduct = productRepository.save(product);
         return productMapper.toResponse(updatedProduct);
     }

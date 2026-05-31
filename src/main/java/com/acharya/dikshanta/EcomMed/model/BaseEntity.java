@@ -1,5 +1,6 @@
 package com.acharya.dikshanta.EcomMed.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
@@ -22,14 +23,16 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class BaseEntity {
+
     @Id
     @UuidGenerator
     private UUID id;
-
-    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp()
     private LocalDateTime createdAt;
-
     @UpdateTimestamp
+    @Column(nullable = true, updatable = true)
     private LocalDateTime updatedAt;
+
 
 }
