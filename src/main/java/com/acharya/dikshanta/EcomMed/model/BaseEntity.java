@@ -23,7 +23,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class BaseEntity {
-
     @Id
     @UuidGenerator
     private UUID id;

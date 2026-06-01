@@ -19,7 +19,11 @@ public class InventoryService {
 //        Product product = entityManager.getReference(Product.class, event.productId());
 
         Inventory inventory = inventoryRepository.findByProductId(event.product().getId()).orElseGet(() ->
-                Inventory.builder().quantity(event.quantity()).product(event.product()).name(event.product().getName()).build());
+                Inventory.builder()
+                        .quantity(event.quantity())
+                        .product(event.product())
+                        .name(event.product().getName())
+                        .build());
 
         inventoryRepository.save(inventory);
 
