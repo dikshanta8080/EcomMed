@@ -1,6 +1,6 @@
 package com.acharya.dikshanta.EcomMed.dto.response;
 
-import com.acharya.dikshanta.EcomMed.utils.enums.Role;
+import com.acharya.dikshanta.EcomMed.enums.Role;
 import lombok.Builder;
 
 import java.util.UUID;

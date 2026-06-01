@@ -1,12 +1,12 @@
 package com.acharya.dikshanta.EcomMed.controller;
 
+import com.acharya.dikshanta.EcomMed.constrants.MessageConstants;
 import com.acharya.dikshanta.EcomMed.dto.request.LoginRequest;
 import com.acharya.dikshanta.EcomMed.dto.request.RegistrationRequest;
 import com.acharya.dikshanta.EcomMed.dto.response.ApiResponse;
 import com.acharya.dikshanta.EcomMed.dto.response.LoginResponse;
 import com.acharya.dikshanta.EcomMed.dto.response.UserResponse;
 import com.acharya.dikshanta.EcomMed.service.AuthService;
-import com.acharya.dikshanta.EcomMed.utils.constrants.MessageConstants;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

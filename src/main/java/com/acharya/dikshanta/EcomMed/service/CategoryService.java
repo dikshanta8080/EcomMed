@@ -1,5 +1,6 @@
 package com.acharya.dikshanta.EcomMed.service;
 
+import com.acharya.dikshanta.EcomMed.constrants.MessageConstants;
 import com.acharya.dikshanta.EcomMed.dto.request.CategoryRequest;
 import com.acharya.dikshanta.EcomMed.dto.response.CategoryResponse;
 import com.acharya.dikshanta.EcomMed.dto.response.PagedResponse;
@@ -7,7 +8,6 @@ import com.acharya.dikshanta.EcomMed.exceptions.BusinessException;
 import com.acharya.dikshanta.EcomMed.mappers.CategoryMapper;
 import com.acharya.dikshanta.EcomMed.model.Category;
 import com.acharya.dikshanta.EcomMed.repository.CategoryRepository;
-import com.acharya.dikshanta.EcomMed.utils.constrants.MessageConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

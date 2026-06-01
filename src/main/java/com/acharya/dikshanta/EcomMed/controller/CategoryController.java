@@ -1,12 +1,12 @@
 package com.acharya.dikshanta.EcomMed.controller;
 
+import com.acharya.dikshanta.EcomMed.constrants.MessageConstants;
 import com.acharya.dikshanta.EcomMed.dto.request.CategoryRequest;
 import com.acharya.dikshanta.EcomMed.dto.request.PageableRequest;
 import com.acharya.dikshanta.EcomMed.dto.response.ApiResponse;
 import com.acharya.dikshanta.EcomMed.dto.response.CategoryResponse;
 import com.acharya.dikshanta.EcomMed.dto.response.PagedResponse;
 import com.acharya.dikshanta.EcomMed.service.CategoryService;
-import com.acharya.dikshanta.EcomMed.utils.constrants.MessageConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

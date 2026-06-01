@@ -1,4 +1,4 @@
-package com.acharya.dikshanta.EcomMed.configuration.security;
+package com.acharya.dikshanta.EcomMed.security;
 
 import com.acharya.dikshanta.EcomMed.model.User;
 import com.acharya.dikshanta.EcomMed.repository.UserRepository;

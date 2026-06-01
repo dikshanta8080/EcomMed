@@ -1,4 +1,4 @@
-package com.acharya.dikshanta.EcomMed.configuration.security;
+package com.acharya.dikshanta.EcomMed.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

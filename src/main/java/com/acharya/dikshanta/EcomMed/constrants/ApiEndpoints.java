@@ -1,4 +1,4 @@
-package com.acharya.dikshanta.EcomMed.utils.constrants;
+package com.acharya.dikshanta.EcomMed.constrants;
 
 public interface ApiEndpoints {
     String PUBLIC_ENDPOINT = "/auth/**";

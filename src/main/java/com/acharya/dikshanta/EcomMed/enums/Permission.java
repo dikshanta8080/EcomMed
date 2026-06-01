@@ -1,4 +1,4 @@
-package com.acharya.dikshanta.EcomMed.utils.enums;
+package com.acharya.dikshanta.EcomMed.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +28,11 @@ public enum Permission {
     ORDER_PLACE("order:place"),
     CART_ADD("cart:add"),
     CART_UPDATE("cart:update"),
-    CART_DELETE("cart:delete");
+    CART_DELETE("cart:delete"),
+
+    // INVENTORY
+    INVENTORY_UPDATE("inventory:update"),
+    INVENTORY_DELETE("inventory:delete");
     private final String permissionName;
 
 

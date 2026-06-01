@@ -1,4 +1,4 @@
-package com.acharya.dikshanta.EcomMed.utils.enums;
+package com.acharya.dikshanta.EcomMed.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +24,9 @@ public enum Role {
             Permission.USERS_GET,
             Permission.CATEGORY_GET,
             Permission.CATEGORY_ADD,
-            Permission.PRODUCT_ADD
+            Permission.PRODUCT_ADD,
+            Permission.INVENTORY_DELETE,
+            Permission.INVENTORY_UPDATE
     )),
     VENDOR(Set.of(
             Permission.PRODUCT_ADD,
@@ -33,7 +35,9 @@ public enum Role {
             Permission.CART_DELETE,
             Permission.CATEGORY_DELETE,
             Permission.CATEGORY_GET,
-            Permission.CATEGORY_ADD
+            Permission.CATEGORY_ADD,
+            Permission.INVENTORY_UPDATE,
+            Permission.INVENTORY_DELETE
 
     )),
 

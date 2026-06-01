@@ -13,5 +13,7 @@ public interface InventoryRepository extends JpaRepository<Inventory, UUID> {
 
     boolean existsByProductId(UUID productId);
 
+    Optional<Inventory> findByProductIdAndQuantityGreaterThan(UUID productId, Integer quantity);
+
 
 }

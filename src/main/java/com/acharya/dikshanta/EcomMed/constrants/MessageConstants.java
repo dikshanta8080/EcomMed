@@ -1,4 +1,4 @@
-package com.acharya.dikshanta.EcomMed.utils.constrants;
+package com.acharya.dikshanta.EcomMed.constrants;
 
 public interface MessageConstants {
 
@@ -23,6 +23,11 @@ public interface MessageConstants {
         String CATEGORY_ALREADY_EXISTS = "Category Already Exists";
         String CATEGORY_FETCHED = "Categories fetched successfully";
         String CATEGORY_ADDED = "Categories added successfully";
+    }
+
+    interface InventoryConstants {
+        String INVENTORY_NOT_FOUND = "The item is not in stock";
+        String INVALID_QUANTITY = "Please provide valid quantity";
     }
 
 }

@@ -1,7 +1,7 @@
-package com.acharya.dikshanta.EcomMed.configuration.security;
+package com.acharya.dikshanta.EcomMed.security;
 
-import com.acharya.dikshanta.EcomMed.configuration.security.filters.JwtFilter;
-import com.acharya.dikshanta.EcomMed.utils.constrants.ApiEndpoints;
+import com.acharya.dikshanta.EcomMed.constrants.ApiEndpoints;
+import com.acharya.dikshanta.EcomMed.filters.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-import static com.acharya.dikshanta.EcomMed.utils.enums.Permission.*;
+import static com.acharya.dikshanta.EcomMed.enums.Permission.*;
 
 @Configuration
 @RequiredArgsConstructor
@@ -51,6 +51,9 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/categories").hasAuthority(CATEGORY_GET.getPermissionName())
                                 .requestMatchers(HttpMethod.POST, "/category").hasAuthority(CATEGORY_GET.getPermissionName())
                                 .requestMatchers(HttpMethod.POST, "/products").hasAuthority(PRODUCT_ADD.getPermissionName())
+                                .requestMatchers(HttpMethod.GET, "/api/v1/products").hasAuthority(PRODUCT_GET.getPermissionName())
+                                .requestMatchers(HttpMethod.PUT, "/inventory").hasAuthority(INVENTORY_UPDATE.getPermissionName())
+                                .requestMatchers(HttpMethod.DELETE, "/inventory").hasAuthority(INVENTORY_DELETE.getPermissionName())
                                 .requestMatchers(ApiEndpoints.PUBLIC_ENDPOINT).permitAll()
                                 .anyRequest().authenticated()
 

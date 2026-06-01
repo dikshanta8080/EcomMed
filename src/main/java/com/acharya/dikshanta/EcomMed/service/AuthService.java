@@ -1,10 +1,10 @@
 package com.acharya.dikshanta.EcomMed.service;
 
-import com.acharya.dikshanta.EcomMed.configuration.security.UserPrincipal;
 import com.acharya.dikshanta.EcomMed.dto.request.LoginRequest;
 import com.acharya.dikshanta.EcomMed.dto.request.RegistrationRequest;
 import com.acharya.dikshanta.EcomMed.dto.response.LoginResponse;
 import com.acharya.dikshanta.EcomMed.dto.response.UserResponse;
+import com.acharya.dikshanta.EcomMed.security.UserPrincipal;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;

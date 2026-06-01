@@ -1,6 +1,6 @@
 package com.acharya.dikshanta.EcomMed.service;
 
-import com.acharya.dikshanta.EcomMed.configuration.security.UserPrincipal;
+import com.acharya.dikshanta.EcomMed.security.UserPrincipal;
 import com.acharya.dikshanta.EcomMed.utils.Utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

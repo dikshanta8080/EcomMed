@@ -1,6 +1,6 @@
 package com.acharya.dikshanta.EcomMed.model;
 
-import com.acharya.dikshanta.EcomMed.utils.enums.Role;
+import com.acharya.dikshanta.EcomMed.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 

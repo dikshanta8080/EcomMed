@@ -1,7 +1,10 @@
 package com.acharya.dikshanta.EcomMed.service;
 
+import com.acharya.dikshanta.EcomMed.constrants.MessageConstants;
 import com.acharya.dikshanta.EcomMed.dto.request.ProductCreateRequest;
+import com.acharya.dikshanta.EcomMed.dto.request.ProductSearchRequest;
 import com.acharya.dikshanta.EcomMed.dto.request.UpdateStockRequest;
+import com.acharya.dikshanta.EcomMed.dto.response.PagedResponse;
 import com.acharya.dikshanta.EcomMed.dto.response.ProductResponse;
 import com.acharya.dikshanta.EcomMed.events.ProductCreatedEvent;
 import com.acharya.dikshanta.EcomMed.exceptions.BusinessException;
@@ -11,10 +14,13 @@ import com.acharya.dikshanta.EcomMed.model.Category;
 import com.acharya.dikshanta.EcomMed.model.Product;
 import com.acharya.dikshanta.EcomMed.repository.CategoryRepository;
 import com.acharya.dikshanta.EcomMed.repository.ProductRepository;
-import com.acharya.dikshanta.EcomMed.utils.constrants.MessageConstants;
+import com.acharya.dikshanta.EcomMed.specifications.ProductSpecification;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -42,7 +48,7 @@ public class ProductService {
 
     }
 
-    @Transactional
+    @org.springframework.transaction.annotation.Transactional
     public ProductResponse updateStock(UpdateStockRequest request) {
         Product product = productRepository.findById(request.productId()).orElseThrow(() ->
                 new ResourceNotFoundException(MessageConstants.ProductConstants.PRODUCT_NOT_FOUND));
@@ -55,5 +61,14 @@ public class ProductService {
         if ((quantity < 1)) {
             throw new BusinessException(MessageConstants.ProductConstants.INVALID_QUANTITY);
         }
+    }
+
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    public PagedResponse<ProductResponse> findAllProducts(Pageable pageable, ProductSearchRequest request) {
+        Specification<Product> specifications = ProductSpecification.getSpecifications(request);
+        Page<Product> allProducts = productRepository.findAll(specifications, pageable);
+        Page<ProductResponse> productResponses = allProducts.map(productMapper::toResponse);
+        return PagedResponse.toPagedResponse(productResponses);
+
     }
 }

@@ -1,4 +1,4 @@
-package com.acharya.dikshanta.EcomMed.configuration.security.filters;
+package com.acharya.dikshanta.EcomMed.filters;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

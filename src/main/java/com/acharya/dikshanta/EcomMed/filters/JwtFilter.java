@@ -1,6 +1,6 @@
-package com.acharya.dikshanta.EcomMed.configuration.security.filters;
+package com.acharya.dikshanta.EcomMed.filters;
 
-import com.acharya.dikshanta.EcomMed.configuration.security.CustomUserDetailService;
+import com.acharya.dikshanta.EcomMed.security.CustomUserDetailService;
 import com.acharya.dikshanta.EcomMed.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
