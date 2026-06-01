@@ -77,4 +77,10 @@ public class InventoryService {
                 .build();
     }
 
+    @Transactional
+    boolean checkAvailability(UUID productId, Integer quantity) {
+        Inventory inventory = findInventory(productId);
+        return inventory.getQuantity() >= quantity;
+    }
+
 }

@@ -48,8 +48,8 @@ public class SecurityConfig {
                                         "/webjars/**"
                                 ).permitAll()
                                 .requestMatchers(HttpMethod.GET, "/users").hasAuthority(USERS_GET.getPermissionName())
-                                .requestMatchers(HttpMethod.GET, "/categories").hasAuthority(CATEGORY_GET.getPermissionName())
-                                .requestMatchers(HttpMethod.POST, "/category").hasAuthority(CATEGORY_GET.getPermissionName())
+                                .requestMatchers(HttpMethod.GET, "/category").hasAuthority(CATEGORY_GET.getPermissionName())
+                                .requestMatchers(HttpMethod.POST, "/category").hasAuthority(CATEGORY_ADD.getPermissionName())
                                 .requestMatchers(HttpMethod.POST, "/products").hasAuthority(PRODUCT_ADD.getPermissionName())
                                 .requestMatchers(HttpMethod.GET, "/api/v1/products").hasAuthority(PRODUCT_GET.getPermissionName())
                                 .requestMatchers(HttpMethod.PUT, "/inventory").hasAuthority(INVENTORY_UPDATE.getPermissionName())
