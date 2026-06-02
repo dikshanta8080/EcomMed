@@ -7,10 +7,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.UUID;
 
 public class LoggedInUser {
-    static UUID getLoggedInUser() {
+    public static UUID getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         return userPrincipal.getId();
+
 
     }
 }

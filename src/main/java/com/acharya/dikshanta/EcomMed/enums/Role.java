@@ -18,15 +18,13 @@ public enum Role {
             Permission.VENDOR_DELETE,
             Permission.PRODUCT_GET,
             Permission.ORDER_PLACE,
-            Permission.CART_UPDATE,
-            Permission.CART_ADD,
-            Permission.CART_DELETE,
             Permission.USERS_GET,
             Permission.CATEGORY_GET,
             Permission.CATEGORY_ADD,
             Permission.PRODUCT_ADD,
             Permission.INVENTORY_DELETE,
-            Permission.INVENTORY_UPDATE
+            Permission.INVENTORY_UPDATE,
+            Permission.CART_ADD
     )),
     VENDOR(Set.of(
             Permission.PRODUCT_ADD,

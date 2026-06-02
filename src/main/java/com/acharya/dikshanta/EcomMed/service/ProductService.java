@@ -13,6 +13,7 @@ import com.acharya.dikshanta.EcomMed.mappers.ProductMapper;
 import com.acharya.dikshanta.EcomMed.model.Category;
 import com.acharya.dikshanta.EcomMed.model.Product;
 import com.acharya.dikshanta.EcomMed.repository.CategoryRepository;
+import com.acharya.dikshanta.EcomMed.repository.InventoryRepository;
 import com.acharya.dikshanta.EcomMed.repository.ProductRepository;
 import com.acharya.dikshanta.EcomMed.specifications.ProductSpecification;
 import jakarta.transaction.Transactional;
@@ -30,6 +31,7 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
     private final ApplicationEventPublisher eventPublisher;
+    private final InventoryRepository inventoryRepository;
 
     @Transactional
     public ProductResponse createProduct(ProductCreateRequest request) {
@@ -67,6 +69,7 @@ public class ProductService {
     public PagedResponse<ProductResponse> findAllProducts(Pageable pageable, ProductSearchRequest request) {
         Specification<Product> specifications = ProductSpecification.getSpecifications(request);
         Page<Product> allProducts = productRepository.findAll(specifications, pageable);
+
         Page<ProductResponse> productResponses = allProducts.map(productMapper::toResponse);
         return PagedResponse.toPagedResponse(productResponses);
 

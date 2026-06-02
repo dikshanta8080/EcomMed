@@ -10,6 +10,7 @@ public record ProductResponse(
         UUID id,
         String name,
         BigDecimal price,
-        UUID categoryId
+        UUID categoryId,
+        Integer availableStock
 ) {
 }

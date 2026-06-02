@@ -33,6 +33,9 @@ public enum Permission {
     // INVENTORY
     INVENTORY_UPDATE("inventory:update"),
     INVENTORY_DELETE("inventory:delete");
+
+    //
+
     private final String permissionName;
 
 

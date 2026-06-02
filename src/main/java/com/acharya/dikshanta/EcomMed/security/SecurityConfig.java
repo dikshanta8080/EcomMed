@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -27,6 +28,7 @@ import static com.acharya.dikshanta.EcomMed.enums.Permission.*;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableMethodSecurity
 public class SecurityConfig {
     private final CustomUserDetailService customUserDetailService;
     private final JwtFilter jwtFilter;
@@ -54,6 +56,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/v1/products").hasAuthority(PRODUCT_GET.getPermissionName())
                                 .requestMatchers(HttpMethod.PUT, "/inventory").hasAuthority(INVENTORY_UPDATE.getPermissionName())
                                 .requestMatchers(HttpMethod.DELETE, "/inventory").hasAuthority(INVENTORY_DELETE.getPermissionName())
+                                .requestMatchers(HttpMethod.POST, "/cart").hasAuthority(CART_ADD.getPermissionName())
                                 .requestMatchers(ApiEndpoints.PUBLIC_ENDPOINT).permitAll()
                                 .anyRequest().authenticated()
 
