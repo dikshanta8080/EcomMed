@@ -15,6 +15,7 @@ import com.acharya.dikshanta.EcomMed.repository.UserRepository;
 import com.acharya.dikshanta.EcomMed.utils.LoggedInUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,7 @@ public class CartService {
     private final InventoryService inventoryService;
 
     @Transactional
-//    @PreAuthorize("hasAuthority('CART_ADD')")
+    @PreAuthorize("hasAuthority('cart:add')")
     public AddToCartResponse addToCart(AddToCartRequest request) {
         if (!inventoryService.checkAvailability(request.productId(), request.quantity())) {
             throw new BusinessException("The stock is not available");

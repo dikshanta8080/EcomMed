@@ -5,6 +5,7 @@ import com.acharya.dikshanta.EcomMed.dto.request.ProductCreateRequest;
 import com.acharya.dikshanta.EcomMed.dto.request.ProductSearchRequest;
 import com.acharya.dikshanta.EcomMed.dto.request.UpdateStockRequest;
 import com.acharya.dikshanta.EcomMed.dto.response.PagedResponse;
+import com.acharya.dikshanta.EcomMed.dto.response.ProductCreateResponse;
 import com.acharya.dikshanta.EcomMed.dto.response.ProductResponse;
 import com.acharya.dikshanta.EcomMed.events.ProductCreatedEvent;
 import com.acharya.dikshanta.EcomMed.exceptions.BusinessException;
@@ -34,7 +35,7 @@ public class ProductService {
     private final InventoryRepository inventoryRepository;
 
     @Transactional
-    public ProductResponse createProduct(ProductCreateRequest request) {
+    public ProductCreateResponse createProduct(ProductCreateRequest request) {
         if (productRepository.existsByName(request.name())) {
             throw new BusinessException(MessageConstants.ProductConstants.PRODUCT_EXISTS);
         }
@@ -51,7 +52,7 @@ public class ProductService {
     }
 
     @org.springframework.transaction.annotation.Transactional
-    public ProductResponse updateStock(UpdateStockRequest request) {
+    public ProductCreateResponse updateStock(UpdateStockRequest request) {
         Product product = productRepository.findById(request.productId()).orElseThrow(() ->
                 new ResourceNotFoundException(MessageConstants.ProductConstants.PRODUCT_NOT_FOUND));
         checkQuantity(request.quantity());
@@ -70,7 +71,7 @@ public class ProductService {
         Specification<Product> specifications = ProductSpecification.getSpecifications(request);
         Page<Product> allProducts = productRepository.findAll(specifications, pageable);
 
-        Page<ProductResponse> productResponses = allProducts.map(productMapper::toResponse);
+        Page<ProductResponse> productResponses = allProducts.map(productMapper::toProductResponse);
         return PagedResponse.toPagedResponse(productResponses);
 
     }

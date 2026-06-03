@@ -6,6 +6,7 @@ import com.acharya.dikshanta.EcomMed.dto.request.ProductCreateRequest;
 import com.acharya.dikshanta.EcomMed.dto.request.ProductSearchRequest;
 import com.acharya.dikshanta.EcomMed.dto.response.ApiResponse;
 import com.acharya.dikshanta.EcomMed.dto.response.PagedResponse;
+import com.acharya.dikshanta.EcomMed.dto.response.ProductCreateResponse;
 import com.acharya.dikshanta.EcomMed.dto.response.ProductResponse;
 import com.acharya.dikshanta.EcomMed.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,8 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<ProductResponse>> createProduct(@RequestBody ProductCreateRequest request) {
-        ProductResponse product = productService.createProduct(request);
+    public ResponseEntity<ApiResponse<ProductCreateResponse>> createProduct(@RequestBody ProductCreateRequest request) {
+        ProductCreateResponse product = productService.createProduct(request);
         return ResponseEntity.ok(ApiResponse.success(product, MessageConstants.ProductConstants.PRODUCT_CREATED));
     }
 

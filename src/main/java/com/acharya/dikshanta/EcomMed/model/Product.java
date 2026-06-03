@@ -22,6 +22,9 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private BigDecimal price;
 
+    @OneToOne(mappedBy = "product")
+    private Inventory inventory;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;

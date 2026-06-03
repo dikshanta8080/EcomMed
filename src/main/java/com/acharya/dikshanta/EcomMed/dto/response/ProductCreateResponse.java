@@ -6,11 +6,12 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Builder
-public record ProductResponse(
+public record ProductCreateResponse(
         UUID id,
         String name,
         BigDecimal price,
-        String categoryName,
-        Integer availableStock
+        String categoryName
+
+
 ) {
 }
