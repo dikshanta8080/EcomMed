@@ -32,6 +32,9 @@ public class Product extends BaseEntity {
     @OneToMany(mappedBy = "product")
     private List<CartItem> cartItems = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product")
+    private List<OrderItem> orderItems = new ArrayList<>();
+
     private void addCartItem(CartItem cartItem) {
         cartItems.add(cartItem);
         cartItem.setProduct(this);
@@ -40,5 +43,15 @@ public class Product extends BaseEntity {
     private void removeCartItem(CartItem cartItem) {
         cartItems.remove(cartItem);
         cartItem.setProduct(null);
+    }
+
+    private void addOrderItem(OrderItem orderItem) {
+        this.orderItems.add(orderItem);
+        orderItem.setProduct(this);
+    }
+
+    private void removeOrderItem(OrderItem orderItem) {
+        this.orderItems.remove(orderItem);
+        orderItem.setProduct(null);
     }
 }

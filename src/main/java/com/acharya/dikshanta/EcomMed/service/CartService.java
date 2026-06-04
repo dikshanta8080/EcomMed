@@ -19,13 +19,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
 @Slf4j
 public class CartService {
+
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
@@ -35,52 +35,82 @@ public class CartService {
     @Transactional
     @PreAuthorize("hasAuthority('cart:add')")
     public AddToCartResponse addToCart(AddToCartRequest request) {
+
+        UUID userId = LoggedInUser.getLoggedInUser();
+
+        validateStock(request);
+
+        User user = getUser(userId);
+        Product product = getProduct(request.productId());
+
+        Cart cart = getOrCreateCart(user);
+
+        CartItem cartItem = getOrCreateOrUpdateCartItem(cart, product, request.quantity());
+
+        updateCartTotal(cart);
+
+        log.info("Cart updated successfully: {}", cart.getId());
+
+        return buildResponse(cartItem);
+    }
+    
+
+    private void validateStock(AddToCartRequest request) {
         if (!inventoryService.checkAvailability(request.productId(), request.quantity())) {
             throw new BusinessException("The stock is not available");
         }
-        UUID userId = LoggedInUser.getLoggedInUser();
-
-        User loggedInUser = userRepository.findById(userId).orElseThrow(() ->
-                new ResourceNotFoundException("User does not exists"));
-        Product product = productRepository.findById(request.productId()).orElseThrow(() ->
-                new ResourceNotFoundException("Product not found"));
-
-        Cart cart = cartRepository.findByUserId(userId).orElseGet(() -> {
-            Cart newCart = Cart.builder()
-                    .user(loggedInUser)
-                    .build();
-            return cartRepository.save(newCart);
-
-        });
-        CartItem savedItem;
-        Optional<CartItem> cartItem = cartItemRepository.findByCartIdAndProductId(cart.getId(), request.productId());
-        if (cartItem.isPresent()) {
-            CartItem existingItem = cartItem.get();
-            existingItem.setQuantity(existingItem.getQuantity() + request.quantity());
-            savedItem = cartItemRepository.save(existingItem);
-
-        } else {
-            CartItem newItem = CartItem.builder()
-                    .product(product)
-                    .unitPrice(product.getPrice())
-                    .quantity(request.quantity())
-                    .cart(cart)
-                    .build();
-            savedItem = cartItemRepository.save(newItem);
-
-        }
-        savedItem.calculateTotalPrice();
-        CartItem finalSavedItem = cartItemRepository.save(savedItem);
-        cart.addCartItem(finalSavedItem);
-        Cart savedCart = cartRepository.save(cart);
-        savedCart.calculateTotal();
-        Cart finalCart = cartRepository.save(savedCart);
-        log.info("The cart is created {}", finalCart.getId());
-        return AddToCartResponse.builder()
-                .cartId(finalCart.getId())
-                .quantity(finalSavedItem.getQuantity())
-                .productId(finalSavedItem.getProduct().getId())
-                .build();
     }
 
+    private User getUser(UUID userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User does not exist"));
+    }
+
+    private Product getProduct(UUID productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+    }
+
+    private Cart getOrCreateCart(User user) {
+        return cartRepository.findByUserId(user.getId())
+                .orElseGet(() -> cartRepository.save(
+                        Cart.builder()
+                                .user(user)
+                                .build()
+                ));
+    }
+
+    private CartItem getOrCreateOrUpdateCartItem(Cart cart, Product product, int quantity) {
+
+        return cartItemRepository.findByCartIdAndProductId(cart.getId(), product.getId())
+                .map(existingItem -> {
+                    existingItem.setQuantity(existingItem.getQuantity() + quantity);
+                    existingItem.calculateTotalPrice();
+                    return cartItemRepository.save(existingItem);
+                })
+                .orElseGet(() -> {
+                    CartItem newItem = CartItem.builder()
+                            .cart(cart)
+                            .product(product)
+                            .unitPrice(product.getPrice())
+                            .quantity(quantity)
+                            .build();
+
+                    newItem.calculateTotalPrice();
+                    return cartItemRepository.save(newItem);
+                });
+    }
+
+    private void updateCartTotal(Cart cart) {
+        cart.calculateTotal();
+        cartRepository.save(cart);
+    }
+
+    private AddToCartResponse buildResponse(CartItem item) {
+        return AddToCartResponse.builder()
+                .cartId(item.getCart().getId())
+                .productId(item.getProduct().getId())
+                .quantity(item.getQuantity())
+                .build();
+    }
 }

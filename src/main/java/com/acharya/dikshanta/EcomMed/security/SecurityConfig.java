@@ -57,6 +57,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.PUT, "/inventory").hasAuthority(INVENTORY_UPDATE.getPermissionName())
                                 .requestMatchers(HttpMethod.DELETE, "/inventory").hasAuthority(INVENTORY_DELETE.getPermissionName())
                                 .requestMatchers(HttpMethod.POST, "/cart").hasAuthority(CART_ADD.getPermissionName())
+                                .requestMatchers(HttpMethod.POST, "/orders").hasAuthority(ORDER_PLACE.getPermissionName())
                                 .requestMatchers(ApiEndpoints.PUBLIC_ENDPOINT).permitAll()
                                 .anyRequest().authenticated()
 
