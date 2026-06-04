@@ -16,13 +16,13 @@ public class InventoryController {
 
     @PutMapping("/update-stock")
     public ResponseEntity<ApiResponse<UpdateStockResponse>> updateStock(@RequestBody UpdateStockRequest request) {
-        UpdateStockResponse updateStockResponse = inventoryService.updateStock(request);
+        UpdateStockResponse updateStockResponse = inventoryService.updateStock(request.productId(), request.quantity());
         return ResponseEntity.ok(ApiResponse.success(updateStockResponse, "Stocked updates successfully"));
     }
 
     @DeleteMapping("/delete-stock")
     public ResponseEntity<ApiResponse<UpdateStockResponse>> deleteStock(@RequestBody UpdateStockRequest request) {
-        UpdateStockResponse updateStockResponse = inventoryService.decreaseStock(request);
+        UpdateStockResponse updateStockResponse = inventoryService.decreaseStock(request.productId(), request.quantity());
         return ResponseEntity.ok(ApiResponse.success(updateStockResponse, "Stocked decreased successfully"));
     }
 }

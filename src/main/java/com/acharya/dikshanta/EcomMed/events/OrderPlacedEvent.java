@@ -3,25 +3,25 @@ package com.acharya.dikshanta.EcomMed.events;
 import com.acharya.dikshanta.EcomMed.enums.OrderStatus;
 import lombok.Builder;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Builder
 public record OrderPlacedEvent(
         UUID orderId,
         OrderStatus orderStatus,
+        String email,
         LocalDateTime placedAt,
         UUID userId,
-        BigDecimal totalAmount
+        List<OrderItemEvent> orderItemEvents
+
 ) {
     @Builder
-    record OrderItemEvent(
+    public record OrderItemEvent(
             UUID productId,
-            String productName,
-            Integer quantity,
-            BigDecimal unitPrice,
-            BigDecimal totalPrice
+            Integer quantity
+
     ) {
 
     }

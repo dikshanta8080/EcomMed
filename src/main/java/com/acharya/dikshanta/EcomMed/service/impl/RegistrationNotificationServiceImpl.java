@@ -1,7 +1,7 @@
 package com.acharya.dikshanta.EcomMed.service.impl;
 
 import com.acharya.dikshanta.EcomMed.events.UserRegisteredEvent;
-import com.acharya.dikshanta.EcomMed.service.NotificationService;
+import com.acharya.dikshanta.EcomMed.service.RegistrationNotificationService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import org.thymeleaf.context.Context;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class NotificationServiceImpl implements NotificationService {
+public class RegistrationNotificationServiceImpl implements RegistrationNotificationService {
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
 

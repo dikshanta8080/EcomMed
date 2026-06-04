@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f9fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .header {
+            background: #4f46e5;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .order-info {
+            margin-bottom: 20px;
+        }
+
+        .order-info p {
+            margin: 5px 0;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f3f4f6;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #d1fae5;
+            color: #065f46;
+            font-size: 12px;
+        }
+
+        .total {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <h2>🎉 Order Placed Successfully!</h2>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+        <div class="order-info">
+            <p><strong>Order ID:</strong> <span th:text="${orderId}"></span></p>
+            <p><strong>Placed At:</strong> <span th:text="${placedAt}"></span></p>
+            <p><strong>Status:</strong>
+                <span class="status" th:text="${orderStatus}"></span>
+            </p>
+        </div>
+
+        <h3>🛒 Items</h3>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${orderItemEvents}">
+                <td th:text="${item.productId}"></td>
+                <td th:text="${item.quantity}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="total">
+            Total Items:
+            <span th:text="${#lists.size(orderItemEvents)}"></span>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        Thank you for shopping with us 💙<br/>
+        © 2026 EcomMed
+    </div>
+
+</div>
+</body>
+</html>

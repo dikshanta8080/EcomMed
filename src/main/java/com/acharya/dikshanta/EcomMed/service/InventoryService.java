@@ -1,8 +1,8 @@
 package com.acharya.dikshanta.EcomMed.service;
 
 import com.acharya.dikshanta.EcomMed.constrants.MessageConstants;
-import com.acharya.dikshanta.EcomMed.dto.request.UpdateStockRequest;
 import com.acharya.dikshanta.EcomMed.dto.response.UpdateStockResponse;
+import com.acharya.dikshanta.EcomMed.events.OrderPlacedEvent;
 import com.acharya.dikshanta.EcomMed.events.ProductCreatedEvent;
 import com.acharya.dikshanta.EcomMed.exceptions.BusinessException;
 import com.acharya.dikshanta.EcomMed.exceptions.ResourceNotFoundException;
@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -46,10 +47,10 @@ public class InventoryService {
     }
 
     @Transactional
-    public UpdateStockResponse updateStock(UpdateStockRequest request) {
-        validateQuantity(request.quantity());
-        Inventory inventory = findInventory(request.productId());
-        inventory.setQuantity(inventory.getQuantity() + request.quantity());
+    public UpdateStockResponse updateStock(UUID productId, Integer quantity) {
+        validateQuantity(quantity);
+        Inventory inventory = findInventory(productId);
+        inventory.setQuantity(inventory.getQuantity() + quantity);
         Inventory savedInventory = inventoryRepository.save(inventory);
         return UpdateStockResponse.builder()
                 .name(inventory.getName())
@@ -62,19 +63,25 @@ public class InventoryService {
         if (quantity < 1) throw new BusinessException(MessageConstants.InventoryConstants.INVALID_QUANTITY);
     }
 
+
     @Transactional
-    public UpdateStockResponse decreaseStock(UpdateStockRequest request) {
-        validateQuantity(request.quantity());
-        Inventory inventory = findInventory(request.productId());
-        if (inventory.getQuantity() < request.quantity()) {
+    public UpdateStockResponse decreaseStock(UUID productId, Integer quantity) {
+        validateQuantity(quantity);
+        Inventory inventory = findInventory(productId);
+        if (inventory.getQuantity() < quantity) {
             throw new BusinessException("Can not decrease more than the available one");
         }
-        inventory.setQuantity(inventory.getQuantity() - request.quantity());
+        inventory.setQuantity(inventory.getQuantity() - quantity);
         Inventory savedInventory = inventoryRepository.save(inventory);
         return UpdateStockResponse.builder()
                 .name(savedInventory.getName())
                 .availableQuantity(savedInventory.getQuantity())
                 .build();
+    }
+
+    @Transactional
+    public void decreaseInventoryStock(List<OrderPlacedEvent.OrderItemEvent> itemEventsList) {
+        itemEventsList.forEach(itemEvents -> decreaseStock(itemEvents.productId(), itemEvents.quantity()));
     }
 
 

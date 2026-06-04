@@ -28,9 +28,7 @@ public class UserService {
 
     @Transactional
     public UserResponse createUser(RegistrationRequest request) {
-        if (userRepository.existsByEmail(request.email())) {
-            throw new BusinessException(MessageConstants.UserConstants.USER_ALREADY_EXISTS);
-        }
+        checkUserExistence(request);
         User customer = userMapper.toEntity(request);
         customer.setPassword(passwordEncoder.encode(request.password()));
         customer.setRole(Role.CUSTOMER);
@@ -38,6 +36,12 @@ public class UserService {
         UserRegisteredEvent registeredEvent = getEvent(savedUser);
         eventPublisher.publishEvent(registeredEvent);
         return userMapper.toResponse(savedUser);
+    }
+
+    private void checkUserExistence(RegistrationRequest request) {
+        if (userRepository.existsByEmail(request.email())) {
+            throw new BusinessException(MessageConstants.UserConstants.USER_ALREADY_EXISTS);
+        }
     }
 
     private UserRegisteredEvent getEvent(User savedUser) {
