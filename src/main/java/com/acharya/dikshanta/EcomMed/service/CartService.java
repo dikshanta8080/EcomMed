@@ -1,7 +1,9 @@
 package com.acharya.dikshanta.EcomMed.service;
 
 import com.acharya.dikshanta.EcomMed.dto.request.AddToCartRequest;
+import com.acharya.dikshanta.EcomMed.dto.request.RemoveFromCartRequest;
 import com.acharya.dikshanta.EcomMed.dto.response.AddToCartResponse;
+import com.acharya.dikshanta.EcomMed.dto.response.RemoveFromCartResponse;
 import com.acharya.dikshanta.EcomMed.exceptions.BusinessException;
 import com.acharya.dikshanta.EcomMed.exceptions.ResourceNotFoundException;
 import com.acharya.dikshanta.EcomMed.model.Cart;
@@ -53,7 +55,48 @@ public class CartService {
 
         return buildResponse(cartItem);
     }
-    
+
+    @Transactional
+    public RemoveFromCartResponse removeFromCart(RemoveFromCartRequest request) {
+        UUID loggedInUserId = LoggedInUser.getLoggedInUser();
+        Cart cart = getCart(loggedInUserId);
+        CartItem cartItem = findCartItem(cart, request);
+        CartItem updatedItem = deleteOrReduceQuantity(cart, request, cartItem);
+        cart.removeCartItem(updatedItem);
+        cart.calculateTotal();
+        Cart savedCart = cartRepository.save(cart);
+        return toResponse(request, savedCart);
+    }
+
+    private RemoveFromCartResponse toResponse(RemoveFromCartRequest request, Cart cart) {
+        return RemoveFromCartResponse.builder()
+                .productId(request.productId())
+                .cartId(cart.getId())
+                .quantity(request.quantity())
+                .build();
+    }
+
+    private CartItem findCartItem(Cart cart, RemoveFromCartRequest request) {
+        return cartItemRepository.findByCartIdAndProductId(cart.getId(), request.productId()).orElseThrow(() ->
+                new ResourceNotFoundException("Item not found"));
+    }
+
+    private CartItem deleteOrReduceQuantity(Cart cart, RemoveFromCartRequest request, CartItem cartItem
+    ) {
+        if (cartItem.getQuantity() <= request.quantity()) {
+            cartItemRepository.delete(cartItem);
+
+        } else {
+            cartItem.setQuantity(cartItem.getQuantity() - request.quantity());
+        }
+        cartItem.calculateTotalPrice();
+        return cartItem;
+
+    }
+
+    private Cart getCart(UUID userId) {
+        return cartRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
+    }
 
     private void validateStock(AddToCartRequest request) {
         if (!inventoryService.checkAvailability(request.productId(), request.quantity())) {

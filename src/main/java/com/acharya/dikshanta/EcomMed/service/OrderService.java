@@ -3,7 +3,6 @@ package com.acharya.dikshanta.EcomMed.service;
 import com.acharya.dikshanta.EcomMed.dto.response.OrderResponse;
 import com.acharya.dikshanta.EcomMed.enums.OrderStatus;
 import com.acharya.dikshanta.EcomMed.exceptions.ResourceNotFoundException;
-import com.acharya.dikshanta.EcomMed.mappers.OrderEventMapper;
 import com.acharya.dikshanta.EcomMed.mappers.OrderMapper;
 import com.acharya.dikshanta.EcomMed.model.Cart;
 import com.acharya.dikshanta.EcomMed.model.Order;
@@ -42,7 +41,6 @@ public class OrderService {
         addOrderItemsFromCart(cart, order);
         order.calculateTotal();
         Order savedOrder = orderRepository.save(order);
-        applicationEventPublisher.publishEvent(OrderEventMapper.toOrderEvent(savedOrder));
         clearCart(cart);
 
         return OrderMapper.toResponse(savedOrder);

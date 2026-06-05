@@ -11,5 +11,6 @@ public record ProductCreateRequest(
         BigDecimal price,
         Integer quantity,
         UUID CategoryId
+
 ) {
 }

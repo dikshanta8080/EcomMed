@@ -10,8 +10,10 @@ import com.acharya.dikshanta.EcomMed.dto.response.ProductCreateResponse;
 import com.acharya.dikshanta.EcomMed.dto.response.ProductResponse;
 import com.acharya.dikshanta.EcomMed.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,9 +21,12 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
     private final ProductService productService;
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<ProductCreateResponse>> createProduct(@RequestBody ProductCreateRequest request) {
-        ProductCreateResponse product = productService.createProduct(request);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<ProductCreateResponse>> createProduct(
+            @RequestBody ProductCreateRequest request,
+            @RequestParam(name = "file") MultipartFile file
+    ) {
+        ProductCreateResponse product = productService.createProduct(request, file);
         return ResponseEntity.ok(ApiResponse.success(product, MessageConstants.ProductConstants.PRODUCT_CREATED));
     }
 

@@ -21,6 +21,7 @@ public class Product extends BaseEntity {
 
     @Column(nullable = false)
     private BigDecimal price;
+    private String imageUrl;
 
     @OneToOne(mappedBy = "product")
     private Inventory inventory;
