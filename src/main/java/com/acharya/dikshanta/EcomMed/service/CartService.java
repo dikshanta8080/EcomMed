@@ -156,4 +156,10 @@ public class CartService {
                 .quantity(item.getQuantity())
                 .build();
     }
+
+    public Cart getCart() {
+        UUID loggedInUser = LoggedInUser.getLoggedInUser();
+        return cartRepository.findByUserId(loggedInUser).orElseThrow(() ->
+                new ResourceNotFoundException("cart not found"));
+    }
 }

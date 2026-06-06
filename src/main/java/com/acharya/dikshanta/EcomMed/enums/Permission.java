@@ -29,12 +29,14 @@ public enum Permission {
     CART_ADD("cart:add"),
     CART_UPDATE("cart:update"),
     CART_DELETE("cart:delete"),
+    CART_GET("cart:get"),
 
     // INVENTORY
     INVENTORY_UPDATE("inventory:update"),
-    INVENTORY_DELETE("inventory:delete");
+    INVENTORY_DELETE("inventory:delete"),
 
     //
+    REMOVE_FROM_CART("remove:from:cart");
 
     private final String permissionName;
 

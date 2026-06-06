@@ -1,16 +1,16 @@
 package com.acharya.dikshanta.EcomMed.controller;
 
 import com.acharya.dikshanta.EcomMed.dto.request.AddToCartRequest;
+import com.acharya.dikshanta.EcomMed.dto.request.RemoveFromCartRequest;
 import com.acharya.dikshanta.EcomMed.dto.response.AddToCartResponse;
 import com.acharya.dikshanta.EcomMed.dto.response.ApiResponse;
+import com.acharya.dikshanta.EcomMed.dto.response.RemoveFromCartResponse;
+import com.acharya.dikshanta.EcomMed.model.Cart;
 import com.acharya.dikshanta.EcomMed.service.CartService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -22,5 +22,16 @@ public class CartController {
     public ResponseEntity<ApiResponse<AddToCartResponse>> addToCart(@RequestBody @Valid AddToCartRequest request) {
         AddToCartResponse addToCartResponse = cartService.addToCart(request);
         return ResponseEntity.ok(ApiResponse.success(addToCartResponse, "Successfully Added to Cart"));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<ApiResponse<RemoveFromCartResponse>> removeFromCart(RemoveFromCartRequest request) {
+        RemoveFromCartResponse removeFromCartResponse = cartService.removeFromCart(request);
+        return ResponseEntity.ok(ApiResponse.success(removeFromCartResponse, "Item removed from cart"));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<Cart>> getCart() {
+        return ResponseEntity.ok(ApiResponse.success(cartService.getCart(), "Cart fetched"));
     }
 }

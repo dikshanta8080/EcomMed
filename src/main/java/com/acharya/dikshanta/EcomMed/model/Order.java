@@ -30,6 +30,9 @@ public class Order extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+    
+    @OneToOne
+    private Invoice invoice;
 
     public void addOrderItem(OrderItem orderItem) {
         this.orderItems.add(orderItem);
