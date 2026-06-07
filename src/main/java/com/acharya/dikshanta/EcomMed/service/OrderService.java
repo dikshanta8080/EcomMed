@@ -3,6 +3,7 @@ package com.acharya.dikshanta.EcomMed.service;
 import com.acharya.dikshanta.EcomMed.dto.response.OrderResponse;
 import com.acharya.dikshanta.EcomMed.enums.OrderStatus;
 import com.acharya.dikshanta.EcomMed.exceptions.ResourceNotFoundException;
+import com.acharya.dikshanta.EcomMed.mappers.OrderEventMapper;
 import com.acharya.dikshanta.EcomMed.mappers.OrderMapper;
 import com.acharya.dikshanta.EcomMed.model.Cart;
 import com.acharya.dikshanta.EcomMed.model.Order;
@@ -14,6 +15,7 @@ import com.acharya.dikshanta.EcomMed.repository.UserRepository;
 import com.acharya.dikshanta.EcomMed.utils.LoggedInUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,8 @@ public class OrderService {
     private final CartRepository cartRepository;
     private final InventoryService inventoryService;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+
 
     @Transactional
     @PreAuthorize("hasAuthority('order:place')")
@@ -42,6 +46,9 @@ public class OrderService {
         order.calculateTotal();
         Order savedOrder = orderRepository.save(order);
         clearCart(cart);
+        kafkaTemplate.send("order-topic",
+                savedOrder.getId().toString(),
+                OrderEventMapper.toOrderEvent(savedOrder));
 
         return OrderMapper.toResponse(savedOrder);
     }

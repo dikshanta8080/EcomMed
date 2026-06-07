@@ -39,18 +39,18 @@ public class ProductService {
     @Transactional
     public ProductCreateResponse createProduct(ProductCreateRequest request, MultipartFile multipartFile) {
         String file = imageUploadService.saveImage(multipartFile);
-        if (productRepository.existsByName(request.name())) {
+        if (productRepository.existsByName(request.getName())) {
             throw new BusinessException(MessageConstants.ProductConstants.PRODUCT_EXISTS);
         }
-        checkQuantity(request.quantity());
-        Category category = categoryRepository.findById(request.CategoryId()).orElseThrow(() ->
+        checkQuantity(request.getQuantity());
+        Category category = categoryRepository.findById(request.getCategoryId()).orElseThrow(() ->
                 new ResourceNotFoundException(MessageConstants.CategoryConstants.CATEGORY_NOT_FOUND));
         Product product = productMapper.toEntity(request);
         product.setCategory(category);
         product.setImageUrl(file);
         Product savedProduct = productRepository.save(product);
 
-        eventPublisher.publishEvent(new ProductCreatedEvent(savedProduct, request.quantity()));
+        eventPublisher.publishEvent(new ProductCreatedEvent(savedProduct, request.getQuantity()));
         return productMapper.toResponse(savedProduct);
 
     }
@@ -65,7 +65,7 @@ public class ProductService {
     }
 
     private void checkQuantity(Integer quantity) {
-        if ((quantity < 1)) {
+        if (quantity == null || quantity < 1) {
             throw new BusinessException(MessageConstants.ProductConstants.INVALID_QUANTITY);
         }
     }

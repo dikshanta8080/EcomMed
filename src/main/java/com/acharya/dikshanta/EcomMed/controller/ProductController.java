@@ -9,6 +9,12 @@ import com.acharya.dikshanta.EcomMed.dto.response.PagedResponse;
 import com.acharya.dikshanta.EcomMed.dto.response.ProductCreateResponse;
 import com.acharya.dikshanta.EcomMed.dto.response.ProductResponse;
 import com.acharya.dikshanta.EcomMed.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Encoding;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +27,21 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductController {
     private final ProductService productService;
 
+    @Operation(summary = "Create a new product with an image")
+    @RequestBody(
+        content = @Content(
+            mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+            schema = @Schema(type = "object"),
+            encoding = {
+                @Encoding(name = "data", contentType = MediaType.APPLICATION_JSON_VALUE),
+                @Encoding(name = "file", contentType = MediaType.IMAGE_PNG_VALUE)
+            }
+        )
+    )
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<ProductCreateResponse>> createProduct(
-            @RequestBody ProductCreateRequest request,
-            @RequestParam(name = "file") MultipartFile file
+            @Valid @RequestPart(name = "data") ProductCreateRequest request,
+            @RequestPart(name = "file") MultipartFile file
     ) {
         ProductCreateResponse product = productService.createProduct(request, file);
         return ResponseEntity.ok(ApiResponse.success(product, MessageConstants.ProductConstants.PRODUCT_CREATED));

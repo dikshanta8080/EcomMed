@@ -10,8 +10,16 @@ import java.util.UUID;
 
 @Service
 public class ImageUploadService {
+
     @Value("${file.upload-dir}")
     String uploadDir;
+
+    /**
+     * Base URL of the application (e.g. http://localhost:8081/api/v1).
+     * Used to build a fully-qualified image URL that clients can access directly.
+     */
+    @Value("${app.base-url}")
+    String baseUrl;
 
     public String saveImage(MultipartFile multipartFile) {
         try {
@@ -22,10 +30,10 @@ public class ImageUploadService {
             }
             File destination = new File(folder, fileName);
             multipartFile.transferTo(destination);
-            return "/images/" + fileName;
+            // Return a fully-qualified URL so the client can fetch the image directly.
+            return baseUrl + "/images/" + fileName;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 }
