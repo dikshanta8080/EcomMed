@@ -1,5 +1,6 @@
 package com.acharya.dikshanta.EcomMed.configuration;
 
+import com.acharya.dikshanta.EcomMed.constrants.KafkaTopics;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +11,7 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic orderTopic() {
         return TopicBuilder
-                .name("order-topic")
+                .name(KafkaTopics.ORDER_PLACED)
                 .partitions(2)
                 .replicas(1)
                 .build();
@@ -26,7 +27,7 @@ public class KafkaTopicConfig {
 
     @Bean
     public NewTopic demoTopic() {
-        return TopicBuilder.name("demo-topic")
+        return TopicBuilder.name(KafkaTopics.PRODUCT_ADDED)
                 .partitions(2)
                 .replicas(1)
                 .build();

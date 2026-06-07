@@ -1,5 +1,6 @@
 package com.acharya.dikshanta.EcomMed.consumers;
 
+import com.acharya.dikshanta.EcomMed.constrants.KafkaTopics;
 import com.acharya.dikshanta.EcomMed.events.OrderPlacedEvent;
 import com.acharya.dikshanta.EcomMed.service.InventoryService;
 import com.acharya.dikshanta.EcomMed.service.InvoiceService;
@@ -16,19 +17,19 @@ public class OrderEventConsumer {
     private final InvoiceService invoiceService;
 
 
-    @KafkaListener(groupId = "inventory-group", topics = "order-topic")
+    @KafkaListener(groupId = "inventory-group", topics = KafkaTopics.ORDER_PLACED)
     public void decreaseInventory(OrderPlacedEvent event) {
         log.debug("decreaseInventory received event {}", event.orderId());
         inventoryService.decreaseInventoryStock(event.orderItemEvents());
     }
 
-    @KafkaListener(groupId = "notification-group", topics = "order-topic")
+    @KafkaListener(groupId = "notification-group", topics = KafkaTopics.ORDER_PLACED)
     public void sendNotification(OrderPlacedEvent event) {
         log.debug("sendNotification received event {}", event.orderId());
         orderPlacedService.sendEmail(event);
     }
 
-    @KafkaListener(groupId = "invoice-group", topics = "order-topic")
+    @KafkaListener(groupId = "invoice-group", topics = KafkaTopics.ORDER_PLACED)
     public void generateReceipt(OrderPlacedEvent event) {
         log.debug("generateReceipt received event {}", event.orderId());
         invoiceService.generateInvoice(event);

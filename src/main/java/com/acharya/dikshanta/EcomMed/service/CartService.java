@@ -2,10 +2,11 @@ package com.acharya.dikshanta.EcomMed.service;
 
 import com.acharya.dikshanta.EcomMed.dto.request.AddToCartRequest;
 import com.acharya.dikshanta.EcomMed.dto.request.RemoveFromCartRequest;
-import com.acharya.dikshanta.EcomMed.dto.response.AddToCartResponse;
+import com.acharya.dikshanta.EcomMed.dto.response.CartResponse;
 import com.acharya.dikshanta.EcomMed.dto.response.RemoveFromCartResponse;
 import com.acharya.dikshanta.EcomMed.exceptions.BusinessException;
 import com.acharya.dikshanta.EcomMed.exceptions.ResourceNotFoundException;
+import com.acharya.dikshanta.EcomMed.mappers.CartResponseMapper;
 import com.acharya.dikshanta.EcomMed.model.Cart;
 import com.acharya.dikshanta.EcomMed.model.CartItem;
 import com.acharya.dikshanta.EcomMed.model.Product;
@@ -36,7 +37,7 @@ public class CartService {
 
     @Transactional
     @PreAuthorize("hasAuthority('cart:add')")
-    public AddToCartResponse addToCart(AddToCartRequest request) {
+    public CartResponse addToCart(AddToCartRequest request) {
 
         UUID userId = LoggedInUser.getLoggedInUser();
 
@@ -52,8 +53,8 @@ public class CartService {
         updateCartTotal(cart);
 
         log.info("Cart updated successfully: {}", cart.getId());
+        return CartResponseMapper.toResponse(cart);
 
-        return buildResponse(cartItem);
     }
 
     @Transactional
@@ -138,7 +139,7 @@ public class CartService {
                             .unitPrice(product.getPrice())
                             .quantity(quantity)
                             .build();
-
+                    cart.addCartItem(newItem);
                     newItem.calculateTotalPrice();
                     return cartItemRepository.save(newItem);
                 });
@@ -146,20 +147,16 @@ public class CartService {
 
     private void updateCartTotal(Cart cart) {
         cart.calculateTotal();
+        cart.calculateTotalItems();
+        cart.calculateUniqueQuantity();
         cartRepository.save(cart);
     }
 
-    private AddToCartResponse buildResponse(CartItem item) {
-        return AddToCartResponse.builder()
-                .cartId(item.getCart().getId())
-                .productId(item.getProduct().getId())
-                .quantity(item.getQuantity())
-                .build();
-    }
-
-    public Cart getCart() {
+    @Transactional(readOnly = true)
+    public CartResponse getCart() {
         UUID loggedInUser = LoggedInUser.getLoggedInUser();
-        return cartRepository.findByUserId(loggedInUser).orElseThrow(() ->
+        Cart cart = cartRepository.findByUserId(loggedInUser).orElseThrow(() ->
                 new ResourceNotFoundException("cart not found"));
+        return CartResponseMapper.toResponse(cart);
     }
 }

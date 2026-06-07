@@ -6,4 +6,5 @@ public interface KafkaTopics {
 
     String USER_REGISTERED =
             "user-registered";
+    String PRODUCT_ADDED = "product-added";
 }

@@ -1,5 +1,6 @@
 package com.acharya.dikshanta.EcomMed.listeners;
 
+import com.acharya.dikshanta.EcomMed.constrants.KafkaTopics;
 import com.acharya.dikshanta.EcomMed.events.OrderPlacedEvent;
 import com.acharya.dikshanta.EcomMed.service.InventoryService;
 import com.acharya.dikshanta.EcomMed.service.InvoiceService;
@@ -21,7 +22,7 @@ public class OrderPlacedEventListener {
     @Async
     @TransactionalEventListener
     public void handleOrderPLacedEvent(OrderPlacedEvent event) {
-        kafkaTemplate.send("order-topic",
+        kafkaTemplate.send(KafkaTopics.ORDER_PLACED,
                 event.orderId().toString(),
                 event);
     }

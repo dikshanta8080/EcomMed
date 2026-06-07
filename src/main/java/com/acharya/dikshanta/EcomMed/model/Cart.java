@@ -21,8 +21,9 @@ public class Cart extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Integer totalItems;
+    private Integer uniqueItems;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @Builder.Default
     private List<CartItem> cartItems = new ArrayList<>();
 
@@ -46,5 +47,15 @@ public class Cart extends BaseEntity {
             return;
         }
         totalPrice = price.get();
+    }
+
+    public void calculateTotalItems() {
+        totalItems = cartItems.stream()
+                .mapToInt(CartItem::getQuantity)
+                .sum();
+    }
+
+    public void calculateUniqueQuantity() {
+        uniqueItems = this.cartItems.size();
     }
 }

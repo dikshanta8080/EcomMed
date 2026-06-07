@@ -1,6 +1,8 @@
 package com.acharya.dikshanta.EcomMed.service;
 
+import com.acharya.dikshanta.EcomMed.dto.request.OrderFilterRequest;
 import com.acharya.dikshanta.EcomMed.dto.response.OrderResponse;
+import com.acharya.dikshanta.EcomMed.dto.response.PagedResponse;
 import com.acharya.dikshanta.EcomMed.enums.OrderStatus;
 import com.acharya.dikshanta.EcomMed.exceptions.ResourceNotFoundException;
 import com.acharya.dikshanta.EcomMed.mappers.OrderEventMapper;
@@ -12,10 +14,13 @@ import com.acharya.dikshanta.EcomMed.model.User;
 import com.acharya.dikshanta.EcomMed.repository.CartRepository;
 import com.acharya.dikshanta.EcomMed.repository.OrderRepository;
 import com.acharya.dikshanta.EcomMed.repository.UserRepository;
+import com.acharya.dikshanta.EcomMed.specifications.OrderSpecification;
 import com.acharya.dikshanta.EcomMed.utils.LoggedInUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,9 +34,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
-    private final InventoryService inventoryService;
     private final ApplicationEventPublisher applicationEventPublisher;
-    private final KafkaTemplate<String, Object> kafkaTemplate;
 
 
     @Transactional
@@ -46,9 +49,7 @@ public class OrderService {
         order.calculateTotal();
         Order savedOrder = orderRepository.save(order);
         clearCart(cart);
-        kafkaTemplate.send("order-topic",
-                savedOrder.getId().toString(),
-                OrderEventMapper.toOrderEvent(savedOrder));
+        applicationEventPublisher.publishEvent(OrderEventMapper.toOrderEvent(savedOrder));
 
         return OrderMapper.toResponse(savedOrder);
     }
@@ -89,5 +90,13 @@ public class OrderService {
     private void clearCart(Cart cart) {
         cart.getCartItems().clear();
         cartRepository.delete(cart);
+    }
+
+    @Transactional(readOnly = true)
+    public PagedResponse<OrderResponse> getAllOrders(Pageable pageable, OrderFilterRequest request) {
+        Specification<Order> orderSpecification = OrderSpecification.getSpecification(request);
+        Page<Order> pagedOrders = orderRepository.findAll(orderSpecification, pageable);
+        Page<OrderResponse> pagedOrderResponse = pagedOrders.map(OrderMapper::toResponse);
+        return PagedResponse.toPagedResponse(pagedOrderResponse);
     }
 }

@@ -1,11 +1,12 @@
 package com.acharya.dikshanta.EcomMed.events;
 
-import com.acharya.dikshanta.EcomMed.model.Product;
 import lombok.Builder;
+
+import java.util.UUID;
 
 @Builder
 public record ProductCreatedEvent(
-        Product product,
+        UUID productId,
         Integer quantity
 
 ) {

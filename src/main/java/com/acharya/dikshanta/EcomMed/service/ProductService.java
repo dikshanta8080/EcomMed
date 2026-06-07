@@ -24,7 +24,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @Service
@@ -37,8 +36,7 @@ public class ProductService {
     private final ImageUploadService imageUploadService;
 
     @Transactional
-    public ProductCreateResponse createProduct(ProductCreateRequest request, MultipartFile multipartFile) {
-        String file = imageUploadService.saveImage(multipartFile);
+    public ProductCreateResponse createProduct(ProductCreateRequest request) {
         if (productRepository.existsByName(request.getName())) {
             throw new BusinessException(MessageConstants.ProductConstants.PRODUCT_EXISTS);
         }
@@ -47,10 +45,9 @@ public class ProductService {
                 new ResourceNotFoundException(MessageConstants.CategoryConstants.CATEGORY_NOT_FOUND));
         Product product = productMapper.toEntity(request);
         product.setCategory(category);
-        product.setImageUrl(file);
         Product savedProduct = productRepository.save(product);
 
-        eventPublisher.publishEvent(new ProductCreatedEvent(savedProduct, request.getQuantity()));
+        eventPublisher.publishEvent(new ProductCreatedEvent(savedProduct.getId(), request.getQuantity()));
         return productMapper.toResponse(savedProduct);
 
     }

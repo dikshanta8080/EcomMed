@@ -7,6 +7,7 @@ import com.acharya.dikshanta.EcomMed.events.ProductCreatedEvent;
 import com.acharya.dikshanta.EcomMed.exceptions.BusinessException;
 import com.acharya.dikshanta.EcomMed.exceptions.ResourceNotFoundException;
 import com.acharya.dikshanta.EcomMed.model.Inventory;
+import com.acharya.dikshanta.EcomMed.model.Product;
 import com.acharya.dikshanta.EcomMed.repository.InventoryRepository;
 import com.acharya.dikshanta.EcomMed.repository.ProductRepository;
 import jakarta.persistence.EntityManager;
@@ -26,13 +27,13 @@ public class InventoryService {
 
     @Transactional(readOnly = false)
     public void createInventory(ProductCreatedEvent event) {
-//        Product product = entityManager.getReference(Product.class, event.productId());
-
-        Inventory inventory = inventoryRepository.findByProductId(event.product().getId()).orElseGet(() ->
+        Product product = productRepository.findById(event.productId()).orElseThrow(() ->
+                new ResourceNotFoundException("product not found"));
+        Inventory inventory = inventoryRepository.findByProductId(event.productId()).orElseGet(() ->
                 Inventory.builder()
                         .quantity(event.quantity())
-                        .product(event.product())
-                        .name(event.product().getName())
+                        .product(product)
+                        .name(product.getName())
                         .build());
 
         inventoryRepository.save(inventory);

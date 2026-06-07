@@ -1,13 +1,14 @@
 package com.acharya.dikshanta.EcomMed.controller;
 
+import com.acharya.dikshanta.EcomMed.dto.request.OrderFilterRequest;
+import com.acharya.dikshanta.EcomMed.dto.request.PageableRequest;
 import com.acharya.dikshanta.EcomMed.dto.response.ApiResponse;
 import com.acharya.dikshanta.EcomMed.dto.response.OrderResponse;
+import com.acharya.dikshanta.EcomMed.dto.response.PagedResponse;
 import com.acharya.dikshanta.EcomMed.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,5 +20,13 @@ public class OrderController {
     public ResponseEntity<ApiResponse<OrderResponse>> placeOrder() {
         OrderResponse orderResponse = orderService.placeOrder();
         return ResponseEntity.ok(ApiResponse.success(orderResponse, "Order places successfully"));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<PagedResponse<OrderResponse>>> getOrders(
+            @ModelAttribute PageableRequest pageableRequest,
+            @ModelAttribute OrderFilterRequest request) {
+        PagedResponse<OrderResponse> allOrders = orderService.getAllOrders(pageableRequest.toPageable(), request);
+        return ResponseEntity.ok(ApiResponse.success(allOrders, "Orders fetched successfully"));
     }
 }

@@ -1,18 +1,31 @@
 package com.acharya.dikshanta.EcomMed.listeners;
 
+import com.acharya.dikshanta.EcomMed.constrants.KafkaTopics;
 import com.acharya.dikshanta.EcomMed.events.ProductCreatedEvent;
-import com.acharya.dikshanta.EcomMed.service.InventoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.event.EventListener;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionalEventListener;
+
+import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class ProductAddedEventListener {
-    private final InventoryService inventoryService;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    @EventListener
+    @TransactionalEventListener
     public void handleAddProductEvent(ProductCreatedEvent event) {
-        inventoryService.createInventory(event);
+        CompletableFuture<SendResult<String, Object>> send = kafkaTemplate.send(KafkaTopics.PRODUCT_ADDED,
+                event.productId().toString(),
+                event).whenComplete((result, ex) -> {
+            if (ex != null) {
+                log.error("Failed to publish an event {}", ex.getMessage(), ex);
+            }
+            log.info("event published successfully {}", event.productId());
+        });
     }
 }

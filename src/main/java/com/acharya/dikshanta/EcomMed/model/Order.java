@@ -30,8 +30,8 @@ public class Order extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-    
-    @OneToOne
+
+    @OneToOne(mappedBy = "order")
     private Invoice invoice;
 
     public void addOrderItem(OrderItem orderItem) {
