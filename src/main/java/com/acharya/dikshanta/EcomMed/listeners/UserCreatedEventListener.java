@@ -1,5 +1,6 @@
 package com.acharya.dikshanta.EcomMed.listeners;
 
+import com.acharya.dikshanta.EcomMed.constrants.KafkaTopics;
 import com.acharya.dikshanta.EcomMed.events.UserRegisteredEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ public class UserCreatedEventListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Async
     public void sendRegistrationEmail(UserRegisteredEvent event) {
-        kafkaTemplate.send("registration-topic", event.id().toString(), event)
+        kafkaTemplate.send(KafkaTopics.USER_REGISTERED, event.id().toString(), event)
                 .whenComplete((result, ex) -> {
                     if (ex != null) {
                         log.error("Failed to send event for id={}", event.id(), ex);

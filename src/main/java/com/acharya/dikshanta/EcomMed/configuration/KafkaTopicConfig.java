@@ -19,7 +19,7 @@ public class KafkaTopicConfig {
 
     @Bean
     public NewTopic registrationTopic() {
-        return TopicBuilder.name("registration-topic")
+        return TopicBuilder.name(KafkaTopics.USER_REGISTERED)
                 .partitions(2)
                 .replicas(1)
                 .build();
