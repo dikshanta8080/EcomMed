@@ -57,3 +57,15 @@ Request URL: /api/v1/swagger-ui/swagger-initializer.js at 2026-06-08T10:50:55.25
 Request URL: /api/v1/v3/api-docs/swagger-config at 2026-06-08T10:50:55.406121827
 Request URL: /api/v1/v3/api-docs at 2026-06-08T10:50:55.445401638
 Request URL: /api/v1/auth/login at 2026-06-08T10:51:18.803082099
+Request URL: /api/v1/swagger-ui/index.html at 2026-06-08T11:28:42.208476503
+Request URL: /api/v1/swagger-ui/index.css at 2026-06-08T11:28:42.240158154
+Request URL: /api/v1/swagger-ui/swagger-ui.css at 2026-06-08T11:28:42.240197180
+Request URL: /api/v1/swagger-ui/swagger-ui-bundle.js at 2026-06-08T11:28:42.240798125
+Request URL: /api/v1/swagger-ui/swagger-ui-standalone-preset.js at 2026-06-08T11:28:42.243687306
+Request URL: /api/v1/swagger-ui/swagger-initializer.js at 2026-06-08T11:28:42.244375569
+Request URL: /api/v1/v3/api-docs/swagger-config at 2026-06-08T11:28:42.386172806
+Request URL: /api/v1/v3/api-docs at 2026-06-08T11:28:42.403797688
+Request URL: /api/v1/auth/register at 2026-06-08T11:29:35.387854195
+Request URL: /api/v1/auth/register at 2026-06-08T11:29:44.463299241
+Request URL: /api/v1/auth/register at 2026-06-08T11:35:55.762082294
+Request URL: /api/v1/auth/register at 2026-06-08T11:36:58.137252025

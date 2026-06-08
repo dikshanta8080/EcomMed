@@ -8,6 +8,7 @@ import com.acharya.dikshanta.EcomMed.service.impl.OrderPlacedServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -20,21 +21,33 @@ public class OrderEventConsumer {
 
 
     @KafkaListener(groupId = "inventory-group", topics = KafkaTopics.ORDER_PLACED)
-    public void decreaseInventory(OrderPlacedEvent event) {
+    public void decreaseInventory(@Payload OrderPlacedEvent event) {
         log.debug("decreaseInventory received event {}", event.orderId());
-        inventoryService.decreaseInventoryStock(event.orderItemEvents());
+        try {
+            inventoryService.decreaseInventoryStock(event.orderItemEvents());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @KafkaListener(groupId = "notification-group", topics = KafkaTopics.ORDER_PLACED)
-    public void sendNotification(OrderPlacedEvent event) {
+    public void sendNotification(@Payload OrderPlacedEvent event) {
         log.debug("sendNotification received event {}", event.orderId());
-        orderPlacedService.sendEmail(event);
+        try {
+            orderPlacedService.sendEmail(event);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @KafkaListener(groupId = "invoice-group", topics = KafkaTopics.ORDER_PLACED)
-    public void generateReceipt(OrderPlacedEvent event) {
+    public void generateReceipt(@Payload OrderPlacedEvent event) {
         log.debug("generateReceipt received event {}", event.orderId());
-        invoiceService.generateInvoice(event);
+        try {
+            invoiceService.generateInvoice(event);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

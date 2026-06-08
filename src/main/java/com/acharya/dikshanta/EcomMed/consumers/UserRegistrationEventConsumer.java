@@ -6,6 +6,7 @@ import com.acharya.dikshanta.EcomMed.service.RegistrationNotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -14,9 +15,15 @@ import org.springframework.stereotype.Component;
 public class UserRegistrationEventConsumer {
     private final RegistrationNotificationService registrationNotificationService;
 
+
     @KafkaListener(topics = KafkaTopics.USER_REGISTERED, groupId = "notification-group")
-    public void sendNotification(UserRegisteredEvent event) {
+    public void sendNotification(@Payload UserRegisteredEvent event) {
         log.debug("sendNotification received an event {}", event.id());
-        registrationNotificationService.sendSuccessfulRegistrationEmail(event);
+        try {
+            registrationNotificationService.sendSuccessfulRegistrationEmail(event);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
