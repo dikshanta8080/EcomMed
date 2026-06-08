@@ -25,6 +25,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -68,7 +69,7 @@ public class OrderService {
     private Order createOrder(User user) {
         return Order.builder()
                 .user(user)
-                .orderStatus(OrderStatus.PENDING)
+                .orderStatus(OrderStatus.COMPLETED)
                 .build();
     }
 
@@ -98,5 +99,12 @@ public class OrderService {
         Page<Order> pagedOrders = orderRepository.findAll(orderSpecification, pageable);
         Page<OrderResponse> pagedOrderResponse = pagedOrders.map(OrderMapper::toResponse);
         return PagedResponse.toPagedResponse(pagedOrderResponse);
+    }
+
+    @Transactional(readOnly = true)
+    public List<OrderResponse> getOrderById() {
+        UUID loggedInUser = LoggedInUser.getLoggedInUser();
+        List<Order> orders = orderRepository.findByUserId(loggedInUser);
+        return orders.stream().map(OrderMapper::toResponse).toList();
     }
 }

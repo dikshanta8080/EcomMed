@@ -26,6 +26,7 @@ public enum Permission {
 
     // CUSTOMER - CART & ORDER
     ORDER_PLACE("order:place"),
+    ORDER_FETCH("order:fetch"),
     CART_ADD("cart:add"),
     CART_UPDATE("cart:update"),
     CART_DELETE("cart:delete"),

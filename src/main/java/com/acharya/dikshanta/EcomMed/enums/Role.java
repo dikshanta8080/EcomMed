@@ -13,31 +13,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public enum Role {
     ADMIN(Set.of(
-            Permission.VENDOR_CREATE,
-            Permission.VENDOR_UPDATE,
-            Permission.VENDOR_DELETE,
-            Permission.PRODUCT_GET,
-            Permission.ORDER_PLACE,
-            Permission.USERS_GET,
-            Permission.CATEGORY_GET,
-            Permission.CATEGORY_ADD,
-            Permission.PRODUCT_ADD,
-            Permission.INVENTORY_DELETE,
-            Permission.INVENTORY_UPDATE,
-            Permission.CART_ADD,
-            Permission.CART_GET
-    )),
-    VENDOR(Set.of(
-            Permission.PRODUCT_ADD,
-            Permission.PRODUCT_UPDATE,
-            Permission.PRODUCT_GET,
-            Permission.CART_DELETE,
-            Permission.CATEGORY_DELETE,
-            Permission.CATEGORY_GET,
-            Permission.CATEGORY_ADD,
-            Permission.INVENTORY_UPDATE,
-            Permission.INVENTORY_DELETE
-
+            Permission.values()
     )),
 
     CUSTOMER(Set.of(
@@ -47,7 +23,8 @@ public enum Role {
             Permission.CART_ADD,
             Permission.CART_DELETE,
             Permission.CATEGORY_GET,
-            Permission.CART_GET));
+            Permission.CART_GET,
+            Permission.ORDER_FETCH));
 
     @Getter
     private final Set<Permission> permissions;

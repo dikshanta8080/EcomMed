@@ -24,7 +24,7 @@ public class CartController {
     }
 
     @DeleteMapping
-    public ResponseEntity<ApiResponse<RemoveFromCartResponse>> removeFromCart(RemoveFromCartRequest request) {
+    public ResponseEntity<ApiResponse<RemoveFromCartResponse>> removeFromCart(@Valid RemoveFromCartRequest request) {
         RemoveFromCartResponse removeFromCartResponse = cartService.removeFromCart(request);
         return ResponseEntity.ok(ApiResponse.success(removeFromCartResponse, "Item removed from cart"));
     }

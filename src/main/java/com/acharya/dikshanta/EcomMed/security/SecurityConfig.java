@@ -60,6 +60,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.DELETE, "/cart").hasAuthority(REMOVE_FROM_CART.getPermissionName())
                                 .requestMatchers(HttpMethod.GET, "/cart").hasAuthority(CART_GET.getPermissionName())
                                 .requestMatchers(HttpMethod.POST, "/orders").hasAuthority(ORDER_PLACE.getPermissionName())
+                                .requestMatchers(HttpMethod.GET, "/orders").hasAuthority(ORDER_FETCH.getPermissionName())
                                 .requestMatchers(ApiEndpoints.PUBLIC_ENDPOINT).permitAll()
                                 .anyRequest().authenticated()
 

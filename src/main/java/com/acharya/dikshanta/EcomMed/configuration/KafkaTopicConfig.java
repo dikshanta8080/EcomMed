@@ -26,7 +26,7 @@ public class KafkaTopicConfig {
     }
 
     @Bean
-    public NewTopic demoTopic() {
+    public NewTopic productAddedTopic() {
         return TopicBuilder.name(KafkaTopics.PRODUCT_ADDED)
                 .partitions(2)
                 .replicas(1)

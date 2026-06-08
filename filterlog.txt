@@ -38,3 +38,13 @@ Request URL: /api/v1/products at 2026-06-07T18:25:07.614057967
 Request URL: /api/v1/cart at 2026-06-07T18:27:07.442129105
 Request URL: /api/v1/cart at 2026-06-07T18:27:16.372772007
 Request URL: /api/v1/orders at 2026-06-07T18:27:50.546864079
+Request URL: /api/v1/orders at 2026-06-07T18:33:14.892124037
+Request URL: /api/v1/swagger-ui/index.html at 2026-06-08T08:33:43.564343114
+Request URL: /api/v1/swagger-ui/index.css at 2026-06-08T08:33:43.601362277
+Request URL: /api/v1/swagger-ui/swagger-ui-standalone-preset.js at 2026-06-08T08:33:43.601498862
+Request URL: /api/v1/swagger-ui/swagger-ui.css at 2026-06-08T08:33:43.601856864
+Request URL: /api/v1/swagger-ui/swagger-ui-bundle.js at 2026-06-08T08:33:43.601986884
+Request URL: /api/v1/swagger-ui/swagger-initializer.js at 2026-06-08T08:33:43.603253350
+Request URL: /api/v1/v3/api-docs/swagger-config at 2026-06-08T08:33:43.739675123
+Request URL: /api/v1/swagger-ui/favicon-32x32.png at 2026-06-08T08:33:43.740648755
+Request URL: /api/v1/v3/api-docs at 2026-06-08T08:33:43.771875777

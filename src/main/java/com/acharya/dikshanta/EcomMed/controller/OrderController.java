@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/orders")
@@ -28,5 +30,12 @@ public class OrderController {
             @ModelAttribute OrderFilterRequest request) {
         PagedResponse<OrderResponse> allOrders = orderService.getAllOrders(pageableRequest.toPageable(), request);
         return ResponseEntity.ok(ApiResponse.success(allOrders, "Orders fetched successfully"));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<OrderResponse>>> getMyOrder() {
+        List<OrderResponse> orderById = orderService.getOrderById();
+        return ResponseEntity.ok(ApiResponse.success(orderById, "Order Fetched successfully"));
+
     }
 }
