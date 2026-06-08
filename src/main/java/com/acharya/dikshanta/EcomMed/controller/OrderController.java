@@ -24,7 +24,7 @@ public class OrderController {
         return ResponseEntity.ok(ApiResponse.success(orderResponse, "Order places successfully"));
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<ApiResponse<PagedResponse<OrderResponse>>> getOrders(
             @ModelAttribute PageableRequest pageableRequest,
             @ModelAttribute OrderFilterRequest request) {
